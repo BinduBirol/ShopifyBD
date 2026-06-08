@@ -1,0 +1,26 @@
+{
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "signup": "Sign up"
+  },
+  "business": {
+    "add_new": "Add new business",
+    "list": "Business list",
+    "create": "Create business"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "loading": "Loading..."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "user": "User",
+    "product": "Product",
+    "blog": "Blog",
+    "signIn": "Sign in",
+    "notFound": "Not found"
+  }
+}
