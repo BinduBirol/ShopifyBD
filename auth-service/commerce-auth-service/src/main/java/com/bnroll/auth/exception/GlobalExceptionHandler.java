@@ -9,12 +9,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.exc.InvalidFormatException;
+
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,7 +44,7 @@ public class GlobalExceptionHandler {
                 .success(false)
                 .error(ApiError.builder()
                         .code(ex.getCode())
-                        .message(messageService.get(ex.getCode(), locale))
+                        .message(messageSource.getMessage(ex.getCode(), null, locale))
                         .status(ex.getStatus().value())
                         .service(serviceName)
                         .build())
@@ -82,6 +87,47 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<?> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException ex,
+            HttpServletRequest request,
+            Locale locale) {
+
+        Map<String, String> fieldErrors = new HashMap<>();
+
+        Throwable cause = ex.getMostSpecificCause();
+
+        if (cause instanceof InvalidFormatException ife) {
+
+            String field = ife.getPath().isEmpty()
+                    ? "request"
+                    : String.valueOf(ife.getPath().get(0).getDescription());
+
+            if ("loginType".equals(field)) {
+                fieldErrors.put(field, messageService.get("loginType.invalid", locale));
+            } else if ("role".equals(field)) {
+                fieldErrors.put(field, messageService.get("role.invalid", locale));
+            } else {
+                fieldErrors.put(field, messageService.get("invalid.enum.value", locale));
+            }
+        }
+
+        return ApiResponse.builder()
+                .success(false)
+                .error(ApiError.builder()
+                        .code("validation.failed")
+                        .message(messageService.get("validation.failed", locale))
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .fieldErrors(fieldErrors)
+                        .service(serviceName)
+                        .build())
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .version("v1")
+                .build();
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiResponse<?> handleDataIntegrityViolation(
@@ -116,6 +162,7 @@ public class GlobalExceptionHandler {
                 .version("v1")
                 .build();
     }
+
 
     // GENERIC ERROR
     @ExceptionHandler(Exception.class)
