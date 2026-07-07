@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -48,7 +49,7 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
-    // GENERIC ERROR
+    // FIELD ERROR
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiResponse<?> handleValidationException(MethodArgumentNotValidException ex, HttpServletRequest request, Locale locale) {
 
@@ -74,6 +75,41 @@ public class GlobalExceptionHandler {
                         .status(ex.getStatusCode().value())
                         .service(serviceName)
                         .fieldErrors(fieldErrors)
+                        .build())
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .version("v1")
+                .build();
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiResponse<?> handleDataIntegrityViolation(
+            DataIntegrityViolationException ex,
+            HttpServletRequest request,
+            Locale locale) {
+
+        String code = "data.integrity.violation";
+
+        Throwable cause = ex.getRootCause();
+
+        if (cause != null && cause.getMessage() != null) {
+            String message = cause.getMessage();
+
+            if (message.contains("users.UK") && message.contains("phone")) {
+                code = "phone.already.exists";
+            } else if (message.contains("users.UK") && message.contains("email")) {
+                code = "email.already.exists";
+            }
+        }
+
+        return ApiResponse.builder()
+                .success(false)
+                .error(ApiError.builder()
+                        .code(code)
+                        .message(messageService.get(code, locale))
+                        .status(HttpStatus.CONFLICT.value())
+                        .service(serviceName)
                         .build())
                 .timestamp(LocalDateTime.now())
                 .path(request.getRequestURI())
