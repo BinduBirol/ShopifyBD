@@ -4,6 +4,10 @@ package com.bnroll.auth.service;
 import com.bnroll.auth.dto.LoginRequest;
 import com.bnroll.auth.dto.LoginResponse;
 import com.bnroll.auth.dto.RegisterRequest;
+import com.bnroll.auth.event.config.KafkaProducer;
+import com.bnroll.auth.event.dto.LoginFailedEvent;
+import com.bnroll.auth.event.dto.LoginSuccessEvent;
+import com.bnroll.auth.event.dto.UserRegisteredEvent;
 import com.bnroll.auth.exception.AuthException;
 import com.bnroll.auth.repository.UserRepository;
 import com.bnroll.auth.security.JwtUtil;
@@ -16,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Set;
 
@@ -28,6 +33,7 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final LoginAttemptService loginAttemptService;
     private final HttpServletRequest httpServletRequest;
+    private final KafkaProducer kafkaProducer;
 
     public LoginResponse login(LoginRequest request, Locale locale) {
 
@@ -133,6 +139,19 @@ public class AuthService {
                 httpServletRequest
         );
 
+        kafkaProducer.sendLoginSuccessEvent(
+                new LoginSuccessEvent(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getPhone(),
+                        user.getFirstName(),
+                        loginType,
+                        httpServletRequest.getRemoteAddr(),
+                        httpServletRequest.getHeader("User-Agent"),
+                        LocalDateTime.now()
+                )
+        );
+
         return LoginResponse.of(
                 token,
                 requestedRole.name(),
@@ -158,6 +177,19 @@ public class AuthService {
                 reason,
                 httpServletRequest
         );
+
+        if (user != null) {
+            kafkaProducer.sendLoginFailedEvent(
+                    new LoginFailedEvent(
+                            request.getIdentifier(),
+                            loginType,
+                            httpServletRequest.getRemoteAddr(),
+                            httpServletRequest.getHeader("User-Agent"),
+                            reason,
+                            LocalDateTime.now()
+                    )
+            );
+        }
 
         throw new AuthException(reason, status);
     }
@@ -187,7 +219,18 @@ public class AuthService {
         user.setPhone(request.getPhone());
         user.setRoles(Set.of(role));
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        kafkaProducer.sendUserRegisteredEvent(
+                new UserRegisteredEvent(
+                        savedUser.getId(),
+                        savedUser.getEmail(),
+                        savedUser.getPhone(),
+                        savedUser.getFirstName()
+                )
+        );
+
+        return savedUser;
     }
 
 

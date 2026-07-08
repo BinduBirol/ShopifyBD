@@ -1,3 +1,4 @@
+debug: true
 server:
   port: 8081
   servlet:
@@ -10,6 +11,11 @@ spring:
     basename: i18n/messages
     encoding: UTF-8
     default-locale: en
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
   profiles:
     active: dev
