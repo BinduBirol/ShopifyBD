@@ -16,20 +16,33 @@ import { login } from 'src/api/authApi';
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import MenuItem from '@mui/material/MenuItem';
+import { useTranslation } from 'react-i18next';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
+} from "@mui/material";
 
 
 
 // ----------------------------------------------------------------------
 
 export function SignInView() {
+  const { t } = useTranslation();
 
   const { enqueueSnackbar } = useSnackbar();
 
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [loginType, setLoginType] = useState("EMAIL");
+  const [loginType, setLoginType] = useState<"EMAIL" | "MOBILE">("EMAIL");
   const router = useRouter();
+  const [verificationDialogOpen, setVerificationDialogOpen] = useState(false);
+  const [verificationType, setVerificationType] = useState<
+    "EMAIL" | "MOBILE" | null
+  >(null);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -50,14 +63,27 @@ export function SignInView() {
 
       if (!response.success) {
 
-        enqueueSnackbar(
-          response.error?.message ?? "Login failed",
-          {
-            variant: "error",
-          }
-        );
+        switch (response.error?.code) {
 
-        return;
+          case "mail.not.verified":
+            setVerificationType("EMAIL");
+            setVerificationDialogOpen(true);
+            return;
+
+          case "phone.not.verified":
+            setVerificationType("MOBILE");
+            setVerificationDialogOpen(true);
+            return;
+
+          default:
+            enqueueSnackbar(
+              response.error?.message ?? t("auth.loginFailed"),
+              {
+                variant: "error",
+              }
+            );
+            return;
+        }
       }
 
       localStorage.setItem(
@@ -74,17 +100,20 @@ export function SignInView() {
         const apiError = error.response?.data;
 
         enqueueSnackbar(
-          apiError?.error?.message ?? "Unable to connect to the server.",
+          apiError?.error?.message ?? t('common.serverUnavailable'),
           {
-            variant: "error",
+            variant: 'error',
           }
         );
 
       } else {
 
-        enqueueSnackbar("Something went wrong.", {
-          variant: "error",
-        });
+        enqueueSnackbar(
+          t('common.somethingWentWrong'),
+          {
+            variant: 'error',
+          }
+        );
 
       }
 
@@ -94,8 +123,14 @@ export function SignInView() {
 
     }
 
-  }, [identifier, password, router]);
-
+  }, [
+    identifier,
+    password,
+    loginType,
+    router,
+    enqueueSnackbar,
+    t,
+  ]);
   const renderForm = (
     <Box
       sx={{
@@ -107,13 +142,15 @@ export function SignInView() {
       <TextField
         select
         fullWidth
-        label="Login Type"
+        label={t('auth.loginType')}
         value={loginType}
-        onChange={(e) => setLoginType(e.target.value)}
+        onChange={(e) =>
+          setLoginType(e.target.value as "EMAIL" | "MOBILE")
+        }
         sx={{ mb: 3 }}
       >
-        <MenuItem value="EMAIL">Email</MenuItem>
-        <MenuItem value="MOBILE">Mobile Number</MenuItem>
+        <MenuItem value="EMAIL">{t('auth.email')}</MenuItem>
+        <MenuItem value="MOBILE">{t('auth.mobileNumber')}</MenuItem>
       </TextField>
 
       <TextField
@@ -121,11 +158,15 @@ export function SignInView() {
         name="identifier"
         value={identifier}
         onChange={(e) => setIdentifier(e.target.value)}
-        label={loginType === "EMAIL" ? "Email Address" : "Mobile Number"}
+        label={
+          loginType === "EMAIL"
+            ? t('auth.emailAddress')
+            : t('auth.mobileNumber')
+        }
         placeholder={
           loginType === "EMAIL"
-            ? "example@gmail.com"
-            : "018XXXXXXXX"
+            ? t('auth.emailPlaceholder')
+            : t('auth.mobilePlaceholder')
         }
         sx={{ mb: 3 }}
         slotProps={{
@@ -138,7 +179,7 @@ export function SignInView() {
       <TextField
         fullWidth
         name="password"
-        label="Password"
+        label={t('auth.password')}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         type={showPassword ? 'text' : 'password'}
@@ -158,7 +199,7 @@ export function SignInView() {
       />
 
       <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
-        Forgot password?
+        {t('auth.forgotPassword')}
       </Link>
 
       <Button
@@ -169,7 +210,7 @@ export function SignInView() {
         disabled={loading}
         onClick={handleSignIn}
       >
-        {loading ? "Signing in..." : "Sign in"}
+        {loading ? t('auth.signingIn') : t('auth.signIn')}
       </Button>
 
 
@@ -188,16 +229,14 @@ export function SignInView() {
           mb: 5,
         }}
       >
-        <Typography variant="h5">Sign in</Typography>
+        <Typography variant="h5">{t('auth.login')}</Typography>
         <Typography
           variant="body2"
-          sx={{
-            color: 'text.secondary',
-          }}
+          sx={{ color: 'text.secondary' }}
         >
-          Don’t have an account?
+          {t('auth.noAccount')}
           <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-            Get started
+            {t('auth.getStarted')}
           </Link>
         </Typography>
       </Box>
@@ -207,7 +246,7 @@ export function SignInView() {
           variant="overline"
           sx={{ color: 'text.secondary', fontWeight: 'fontWeightMedium' }}
         >
-          OR
+          {t('common.or')}
         </Typography>
       </Divider>
       <Box
@@ -227,6 +266,56 @@ export function SignInView() {
           <Iconify width={22} icon="socials:twitter" />
         </IconButton>
       </Box>
+
+      <Dialog
+        open={verificationDialogOpen}
+        onClose={() => setVerificationDialogOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle>
+          {verificationType === "EMAIL"
+            ? t("auth.emailVerificationRequired")
+            : t("auth.phoneVerificationRequired")}
+        </DialogTitle>
+
+        <DialogContent>
+          <DialogContentText>
+            {verificationType === "EMAIL"
+              ? t("auth.emailVerificationDescription")
+              : t("auth.phoneVerificationDescription")}
+          </DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            color="error"
+            variant="outlined"
+
+            onClick={() => setVerificationDialogOpen(false)}
+          >
+            {t("common.cancel")}
+          </Button>
+
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              setVerificationDialogOpen(false);
+
+              router.push(
+                verificationType === "EMAIL"
+                  ? `/verify-email?email=${encodeURIComponent(identifier)}`
+                  : `/verify-phone?phone=${encodeURIComponent(identifier)}`
+              );
+            }}
+          >
+            {verificationType === "EMAIL"
+              ? t("auth.verifyEmail")
+              : t("auth.verifyPhone")}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

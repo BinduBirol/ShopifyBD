@@ -2,7 +2,26 @@
   "auth": {
     "login": "লগইন",
     "logout": "লগ আউট",
-    "signup": "নিবন্ধন করুন"
+    "signup": "নিবন্ধন করুন",
+    "signIn": "সাইন ইন",
+    "signingIn": "সাইন ইন করা হচ্ছে...",
+    "loginType": "লগইন পদ্ধতি",
+    "email": "ইমেইল",
+    "emailAddress": "ইমেইল ঠিকানা",
+    "emailPlaceholder": "example@gmail.com",
+    "mobileNumber": "মোবাইল নম্বর",
+    "mobilePlaceholder": "০১৮XXXXXXXX",
+    "password": "পাসওয়ার্ড",
+    "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
+    "noAccount": "অ্যাকাউন্ট নেই?",
+    "getStarted": "শুরু করুন",
+    "emailVerificationRequired": "ইমেইল যাচাইকরণ প্রয়োজন",
+    "emailVerificationDescription": "আপনার ইমেইল ঠিকানাটি এখনও যাচাই করা হয়নি। চালিয়ে যেতে অনুগ্রহ করে আপনার ইমেইল যাচাই করুন।",
+    "verifyEmail": "ইমেইল যাচাই করুন",
+
+    "phoneVerificationRequired": "মোবাইল নম্বর যাচাইকরণ প্রয়োজন",
+    "phoneVerificationDescription": "আপনার মোবাইল নম্বরটি এখনও যাচাই করা হয়নি। চালিয়ে যেতে অনুগ্রহ করে আপনার মোবাইল নম্বর যাচাই করুন।",
+    "verifyPhone": "মোবাইল নম্বর যাচাই করুন"
   },
   "business": {
     "add_new": "নতুন ব্যবসা যোগ করুন",
@@ -13,7 +32,11 @@
     "save": "সংরক্ষণ করুন",
     "cancel": "বাতিল",
     "delete": "মুছুন",
-    "loading": "লোড হচ্ছে..."
+    "loading": "লোড হচ্ছে...",
+    "or": "অথবা",
+    "serverUnavailable": "সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি।",
+    "somethingWentWrong": "কিছু ভুল হয়েছে।",
+    "continue": "চালিয়ে যান"
   },
   "nav": {
     "dashboard": "ড্যাশবোর্ড",

@@ -2,7 +2,26 @@
   "auth": {
     "login": "Login",
     "logout": "Logout",
-    "signup": "Sign up"
+    "signup": "Sign up",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "loginType": "Login Type",
+    "email": "Email",
+    "emailAddress": "Email Address",
+    "emailPlaceholder": "example@gmail.com",
+    "mobileNumber": "Mobile Number",
+    "mobilePlaceholder": "018XXXXXXXX",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "getStarted": "Get started",
+    "emailVerificationRequired": "Email verification required",
+    "emailVerificationDescription": "Your email address has not been verified yet. Please verify your email to continue.",
+    "verifyEmail": "Verify Email",
+
+    "phoneVerificationRequired": "Phone verification required",
+    "phoneVerificationDescription": "Your mobile number has not been verified yet. Please verify your phone number to continue.",
+    "verifyPhone": "Verify Phone"
   },
   "business": {
     "add_new": "Add new business",
@@ -13,7 +32,11 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "or": "OR",
+    "serverUnavailable": "Unable to connect to the server.",
+    "somethingWentWrong": "Something went wrong.",
+    "continue": "Continue"
   },
   "nav": {
     "dashboard": "Dashboard",

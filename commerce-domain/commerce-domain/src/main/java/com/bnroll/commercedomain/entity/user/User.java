@@ -46,9 +46,11 @@ public class User {
     private Set<RoleName> roles = new HashSet<>();
 
     // 🟢 Account status
-    private boolean active = true;
+    private boolean active = false;
     private boolean locked = false;
     private boolean deleted = false;
+    private boolean verified = false;
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 5)
