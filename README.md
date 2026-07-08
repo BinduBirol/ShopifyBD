@@ -1,6 +1,10 @@
 # Commerce Platform
 
-A modular e-commerce platform built with **Spring Boot** and **Microservices** architecture.
+A modular e-commerce platform built with **Spring Boot**, **Microservices**, and **Event-Driven Architecture**.
+
+The project follows a production-oriented approach with independent services communicating through REST APIs and asynchronous events.
+
+---
 
 ## Tech Stack
 
@@ -9,10 +13,13 @@ A modular e-commerce platform built with **Spring Boot** and **Microservices** a
 * Spring Security
 * Spring Data JPA
 * MySQL
+* Apache Kafka
+* Spring Kafka
 * JWT Authentication
 * Maven
 * Hibernate
 * REST API
+* Event-Driven Architecture
 * Internationalization (i18n)
 * JUnit & Mockito (in progress)
 
@@ -43,13 +50,19 @@ commerce-parent
 │   ├── Login
 │   ├── JWT generation
 │   ├── Role management
-│   └── User management
+│   ├── User management
+│   └── Kafka event publishing
+│       ├── UserRegisteredEvent
+│       ├── LoginSuccessEvent
+│       └── LoginFailedEvent
 │
 ├── commerce-product-service
 │
 ├── commerce-order-service
 │
 ├── commerce-payment-service
+│
+├── commerce-notification-service
 │
 └── commerce-gateway
 ```
@@ -70,6 +83,61 @@ commerce-parent
 * Rate Limiting
 * Shared Domain Module
 * Shared Common Module
+* Kafka Event Publishing
+* Event-driven communication between services
+
+---
+
+## Event-Driven Architecture
+
+The platform uses **Apache Kafka** for asynchronous communication between microservices.
+
+Services publish domain events instead of directly depending on other services.
+
+Example:
+
+### User Registration Flow
+
+```
+Client
+  |
+  v
+Auth Service
+  |
+  ├── Save User
+  |
+  ├── Publish UserRegisteredEvent
+  |
+  v
+Kafka Topic: user-registered
+  |
+  +----------------------+
+  |                      |
+  v                      v
+Notification Service   Audit Service
+(send email)           (store activity)
+```
+
+Current events:
+
+* `UserRegisteredEvent`
+* `LoginSuccessEvent`
+* `LoginFailedEvent`
+
+Future events:
+
+* OrderCreatedEvent
+* PaymentCompletedEvent
+* InventoryUpdatedEvent
+* ProductUpdatedEvent
+
+Benefits:
+
+* Loose coupling between services
+* Independent service scaling
+* Asynchronous processing
+* Easier integration of new services
+* Improved reliability
 
 ---
 
@@ -132,6 +200,7 @@ Accept-Language: bn
 * Order Service
 * Payment Service
 * Notification Service
+* Audit Service
 * API Gateway
 * Service Discovery
 * Config Server
@@ -158,8 +227,10 @@ This project is being developed as a learning-oriented, production-style microse
 
 * Spring Boot
 * Microservices Architecture
+* Event-Driven Architecture
+* Apache Kafka
 * Security
-* JWT
+* JWT Authentication
 * REST API Design
 * Clean Architecture
 * Testing
