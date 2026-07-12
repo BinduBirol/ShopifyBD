@@ -55,9 +55,7 @@ export default function ForgotPasswordPage() {
                 setAlertTitle(t("common.success"));
                 setAlertMessage(response.data);
                 setAlertOpen(true);
-            } else {
-
-                
+            } else {              
 
                 if (
                     response.error?.code === "auth.password.reset.already.requested"
@@ -65,6 +63,13 @@ export default function ForgotPasswordPage() {
                     setAlertTitle(t("common.error"));
                     setAlertMessage(response.error.message);
                     setAlertOpen(true);
+                }else {
+                    enqueueSnackbar(
+                        response.error?.message ?? t('common.somethingWentWrong'),
+                        {
+                            variant: 'error',
+                        }
+                    );
                 }
             }
 

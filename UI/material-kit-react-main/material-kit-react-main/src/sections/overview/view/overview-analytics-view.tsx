@@ -14,20 +14,21 @@ import { AnalyticsTrafficBySite } from '../analytics-traffic-by-site';
 import { AnalyticsCurrentSubject } from '../analytics-current-subject';
 import { AnalyticsConversionRates } from '../analytics-conversion-rates';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from 'src/auth/AuthContext';
 
 // ----------------------------------------------------------------------
 
 export function OverviewAnalyticsView() {
   const { t } = useTranslation();
 
+  const { user } = useAuth();
+
   return (
     <DashboardContent maxWidth="xl">
       <Typography variant="h4" sx={{ mb: { xs: 3, md: 5 } }}>
-        Hi, {t('business.add_new')} 👋
+        Hi, {user?.firstName} 👋
 
-        <div style={{ fontFamily: '"Hind Siliguri", sans-serif' }}>
-          আমি বাংলায় লিখি
-        </div>
+        
 
 
       </Typography>

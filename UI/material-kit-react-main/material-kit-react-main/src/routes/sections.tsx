@@ -10,6 +10,8 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 import { AuthLayout } from 'src/layouts/auth';
 import { DashboardLayout } from 'src/layouts/dashboard';
 import ProtectedRoute from 'src/auth/ProtectedRoute';
+import { RegisterView } from 'src/sections/auth/register-view';
+
 
 // ----------------------------------------------------------------------
 
@@ -73,6 +75,14 @@ export const routesSection: RouteObject[] = [
     element: (
       <AuthLayout>
         <ForgotPasswordPage />
+      </AuthLayout>
+    ),
+  },
+  {
+    path: 'register',
+    element: (
+      <AuthLayout>
+        <RegisterView />
       </AuthLayout>
     ),
   },

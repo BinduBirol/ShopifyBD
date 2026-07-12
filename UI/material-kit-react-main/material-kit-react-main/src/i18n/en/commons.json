@@ -23,6 +23,10 @@
     "verifyPhone": "Verify Phone",
     "checkingAuthentication": "Checking authentication...",
     "loggedOut": "You have been logged out.",
+    "identifierRequired": "Email or mobile number is required",
+    "googleLoginComingSoon": "Google login will be implemented later.",
+    "githubLoginComingSoon": "GitHub login will be implemented later.",
+    "twitterLoginComingSoon": "Twitter login will be implemented later.",
     "forgotPassword": {
       "title": "Forgot Password",
       "description": "Enter your email address or mobile number and we'll send you instructions to reset your password.",
@@ -67,5 +71,27 @@
     "profile": "Profile",
     "settings": "Settings",
     "home": "Home"
+  },
+  "register": {
+    "title": "Create Account",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "role": "Role",
+    "customer": "Customer",
+    "seller": "Seller",
+    "admin": "Admin",
+    "submit": "Register",
+    "loading": "Creating Account...",
+    "alreadyHaveAccount": "Already have an account?",
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required",
+    "emailRequired": "Email is required",
+    "invalidEmail": "Invalid email address",
+    "phoneRequired": "Phone number is required",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 8 characters long"
   }
 }

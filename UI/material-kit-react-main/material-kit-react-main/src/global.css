@@ -34,7 +34,7 @@ body,
   flex: 1 1 auto;
   min-height: 100%;
   flex-direction: column;
-  font-family: 'DM Sans', 'Barlow', 'HindSiliguri', sans-serif;
+  font-family: 'HindSiliguri', 'DM Sans', 'Barlow', sans-serif;
 }
 img {
   max-width: 100%;

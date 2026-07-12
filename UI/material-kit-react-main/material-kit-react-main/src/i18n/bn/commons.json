@@ -23,6 +23,10 @@
     "verifyPhone": "মোবাইল নম্বর যাচাই করুন",
     "checkingAuthentication": "অথেনটিকেশন যাচাই করা হচ্ছে...",
     "loggedOut": "আপনি লগ আউট হয়েছেন।",
+    "identifierRequired": "ইমেইল অথবা মোবাইল নম্বর প্রয়োজন",
+    "googleLoginComingSoon": "Google লগইন সুবিধা পরবর্তীতে যুক্ত করা হবে।",
+    "githubLoginComingSoon": "GitHub লগইন সুবিধা পরবর্তীতে যুক্ত করা হবে।",
+    "twitterLoginComingSoon": "Twitter লগইন সুবিধা পরবর্তীতে যুক্ত করা হবে।",
     "forgotPassword": {
       "title": "পাসওয়ার্ড ভুলে গেছেন",
       "description": "আপনার ইমেইল ঠিকানা বা মোবাইল নম্বর লিখুন এবং আপনার পাসওয়ার্ড রিসেট করতে নির্দেশাবলী পাঠানো হবে।",
@@ -38,7 +42,6 @@
       "success": "পাসওয়ার্ড রিসেট নির্দেশাবলী সফলভাবে পাঠানো হয়েছে।",
       "error": "আপনার অনুরোধ প্রক্রিয়াকরণে সমস্যা। অনুগ্রহ করে আবার চেষ্টা করুন।"
     }
-
   },
   "business": {
     "add_new": "নতুন ব্যবসা যোগ করুন",
@@ -68,5 +71,27 @@
     "profile": "প্রোফাইল",
     "settings": "সেটিংস",
     "home": "হোম"
+  },
+  "register": {
+    "title": "অ্যাকাউন্ট তৈরি করুন",
+    "firstName": "প্রথম নাম",
+    "lastName": "শেষ নাম",
+    "email": "ইমেইল",
+    "phone": "ফোন",
+    "password": "পাসওয়ার্ড",
+    "role": "ভূমিকা",
+    "customer": "কাস্টমার",
+    "seller": "বিক্রেতা",
+    "admin": "প্রশাসক",
+    "submit": "রেজিস্টার",
+    "loading": "অ্যাকাউন্ট তৈরি হচ্ছে...",
+    "alreadyHaveAccount": "ইতিমধ্যে একটি অ্যাকাউন্ট আছে?",
+    "firstNameRequired": "প্রথম নাম প্রয়োজন",
+    "lastNameRequired": "শেষ নাম প্রয়োজন",
+    "emailRequired": "ইমেইল প্রয়োজন",
+    "invalidEmail": "অকার্যকর ইমেইল ঠিকানা",
+    "phoneRequired": "ফোন নম্বর প্রয়োজন",
+    "passwordRequired": "পাসওয়ারড প্রয়োজন",
+    "passwordMinLength": "পাসওয়ার্ড কমপক্ষে 8 অক্ষরের হতে হবে"
   }
 }

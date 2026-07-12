@@ -26,8 +26,6 @@ export const baseTheme: ThemeOptions = {
       shadows: shadows.dark,
       customShadows: customShadows.dark,
     },
-
-    
   },
   components,
   typography,
@@ -39,10 +37,35 @@ export const baseTheme: ThemeOptions = {
 
 type CreateThemeProps = {
   themeOverrides?: ThemeOptions;
+  language?: string;
 };
 
-export function createTheme({ themeOverrides = {} }: CreateThemeProps = {}): Theme {
-  const theme = createMuiTheme(baseTheme, themeOverrides);
+export function createTheme({
+  themeOverrides = {},
+  language = 'en',
+}: CreateThemeProps = {}): Theme {
+  const theme = createMuiTheme(
+    baseTheme,
+    {
+      typography: {
+        ...typography,
+        fontFamily: getFontFamily(language),
+      },
+    },
+    themeOverrides
+  );
+
+  console.log('Theme font:', theme.typography.fontFamily);
 
   return theme;
+}
+
+function getFontFamily(language: string): string {
+  switch (language) {
+    case 'bn':
+      return 'HindSiliguri';
+
+    default:
+      return '"DM Sans", sans-serif';
+  }
 }

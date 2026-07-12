@@ -29,10 +29,17 @@ export const themeConfig: ThemeConfig = {
   /** **************************************
    * Typography
    *************************************** */
+  /*
   fontFamily: {
     primary: 'HindSiliguri, DM Sans Variable, sans-serif',
-  secondary: 'HindSiliguri, Barlow, sans-serif',
+    secondary: 'HindSiliguri, Barlow, sans-serif',
+  },*/
+
+  fontFamily: {
+    primary: 'HindSiliguri',
+    secondary: 'HindSiliguri',
   },
+
   /** **************************************
    * Palette
    *************************************** */

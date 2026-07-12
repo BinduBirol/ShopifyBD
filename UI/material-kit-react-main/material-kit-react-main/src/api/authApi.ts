@@ -35,14 +35,17 @@ export async function login(request: LoginRequest) {
   return response.data;
 }
 
+export async function register(data: any) {
+  const response = await api.post<ApiResponse<any>>('/v1/register', data);
+
+  return response.data;
+}
+
 export function logout(refreshToken: string) {
   return api.post('/v1/logout', {
     refreshToken,
   });
-  
 }
-
-
 
 export function logoutAll(refreshToken: string) {
   return api.post('/v1/logout/all', {
