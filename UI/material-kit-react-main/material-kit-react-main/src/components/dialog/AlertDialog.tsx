@@ -5,9 +5,15 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-} from "@mui/material";
-import { useTranslation } from "react-i18next";
-import { RouterLink } from "src/routes/components";
+} from '@mui/material';
+
+import { useTranslation } from 'react-i18next';
+
+import { RouterLink } from 'src/routes/components';
+
+import { Iconify } from 'src/components/iconify';
+
+
 
 type AlertDialogProps = {
     open: boolean;
@@ -17,6 +23,8 @@ type AlertDialogProps = {
     link?: string;
     onClose: () => void;
 };
+
+
 export default function AlertDialog({
     open,
     title,
@@ -25,7 +33,17 @@ export default function AlertDialog({
     link,
     onClose,
 }: AlertDialogProps) {
+
     const { t } = useTranslation();
+
+
+    const buttonProps = link
+        ? {
+            component: RouterLink,
+            href: link,
+        }
+        : {};
+
 
     return (
         <Dialog
@@ -34,37 +52,39 @@ export default function AlertDialog({
             maxWidth="xs"
             fullWidth
         >
-            <DialogTitle>{title}</DialogTitle>
+
+            <DialogTitle>
+                {title}
+            </DialogTitle>
+
 
             <DialogContent>
-                <DialogContentText>{message}</DialogContentText>
+                <DialogContentText>
+                    {message}
+                </DialogContentText>
             </DialogContent>
 
-            <DialogActions>
 
-                {
-                    link ? (
-                        <Button
-                            variant="outlined"
-                            component={RouterLink}
-                            href={link}
-                            onClick={onClose}
-                            autoFocus
-                        >
-                            {buttonText ?? t("common.ok")}
-                        </Button>
-                    ) : (
-                        <Button
-                            variant="outlined"
-                            onClick={onClose}
-                            autoFocus
-                        >
-                            {buttonText ?? t("common.ok")}
-                        </Button>
-                    )
-                }
+            <DialogActions sx={{ px: 3, pb: 2 }}>
+
+                <Button
+                    variant="contained"
+                    onClick={onClose}
+                    autoFocus
+                    {...buttonProps}
+                    endIcon={
+                        link ? (
+                            <Iconify                                
+                                icon="eva:arrow-ios-forward-fill"
+                            />
+                        ) : undefined
+                    }
+                >
+                    {buttonText ?? t('common.ok')}
+                </Button>
 
             </DialogActions>
+
         </Dialog>
     );
 }

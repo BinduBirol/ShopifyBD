@@ -30,8 +30,8 @@ root.render(
       maxSnack={3}
       autoHideDuration={3000}
       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: 'bottom',
+        horizontal: 'center',
       }}
     >
       <AuthProvider>

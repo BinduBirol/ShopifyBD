@@ -107,6 +107,7 @@
     "invalid": "Please enter a valid 6-digit verification code.",
     "verificationSuccessful": "Your account has been verified successfully.",
     "invalidVerificationLink": "Invalid or expired verification link.",
-    "backToLogin": "Back to Sign In"
+    "backToLogin": "Back to Sign In",
+    "verificationFailed": "Verification failed. Please try again."
   }
 }

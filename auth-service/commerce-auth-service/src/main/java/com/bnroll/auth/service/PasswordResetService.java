@@ -3,6 +3,7 @@ package com.bnroll.auth.service;
 import com.bnroll.auth.exception.AuthException;
 import com.bnroll.auth.repository.PasswordResetTokenRepository;
 import com.bnroll.auth.security.JwtUtil;
+import com.bnroll.auth.util.OtpGenerator;
 import com.bnroll.commercedomain.entity.password.PasswordResetToken;
 import com.bnroll.commercedomain.entity.user.User;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,9 @@ public class PasswordResetService {
                 throw new AuthException(
                         "auth.password.reset.already.requested",
                         HttpStatus.CONFLICT,
-                        formatRemainingTime(remaining, locale)
+
+                        formatRemainingTime(remaining, locale),
+                        token.getUser().getId()
                 );
             }
 
@@ -63,7 +66,7 @@ public class PasswordResetService {
         }
 
 
-        String token = jwtUtil.generatePasswordResetToken(user.getEmail());
+        String token = OtpGenerator.generateToken();
 
         PasswordResetToken entity = PasswordResetToken.builder().tokenHash(DigestUtils.sha256Hex(token)).user(user).createdAt(Instant.now()).expiresAt(Instant.now().plusMillis(passwordResetTokenExpiration)).used(false).build();
 

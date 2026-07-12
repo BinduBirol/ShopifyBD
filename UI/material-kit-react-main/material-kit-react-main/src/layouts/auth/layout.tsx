@@ -5,8 +5,8 @@ import { merge } from 'es-toolkit';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
-
-import { RouterLink } from 'src/routes/components';
+import { _langs } from 'src/_mock';
+import { useTheme, useColorScheme } from '@mui/material/styles';
 
 import { Logo } from 'src/components/logo';
 
@@ -19,6 +19,8 @@ import type { AuthContentProps } from './content';
 import type { MainSectionProps } from '../core/main-section';
 import type { HeaderSectionProps } from '../core/header-section';
 import type { LayoutSectionProps } from '../core/layout-section';
+import { ThemePopover } from '../components/theme-popover';
+import { LanguagePopover } from '../components/language-popover';
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +35,9 @@ export type AuthLayoutProps = LayoutBaseProps & {
   };
 };
 
+
+
+
 export function AuthLayout({
   sx,
   cssVars,
@@ -40,8 +45,12 @@ export function AuthLayout({
   slotProps,
   layoutQuery = 'md',
 }: AuthLayoutProps) {
+
+  const { mode, setMode } = useColorScheme();
   const renderHeader = () => {
     const headerSlotProps: HeaderSectionProps['slotProps'] = { container: { maxWidth: false } };
+
+
 
     const headerSlots: HeaderSectionProps['slots'] = {
       topArea: (
@@ -61,6 +70,16 @@ export function AuthLayout({
           <Link href="https://github.com/BinduBirol" target='_blank' color="inherit" sx={{ typography: 'subtitle2' }}>
             Need help?
           </Link>
+
+
+
+
+          {/* THEME SWITCH */}
+          <ThemePopover mode={mode ?? 'light'} setMode={setMode} />
+
+          <LanguagePopover data={_langs} />
+
+
         </Box>
       ),
     };

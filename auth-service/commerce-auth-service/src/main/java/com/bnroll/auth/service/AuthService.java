@@ -17,6 +17,7 @@ import com.bnroll.commercedomain.entity.user.LoginType;
 import com.bnroll.commercedomain.entity.user.RoleName;
 import com.bnroll.commercedomain.entity.user.User;
 import com.bnroll.common.dto.response.ApiResponse;
+import com.bnroll.enums.VerificationPurpose;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -53,6 +54,8 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     private final MessageSource messageSource;
+
+    private final AccountVerificationService accountVerificationService;
 
     @Value("${jwt.access-token.expiration}")
     private long accessTokenExpiration;
@@ -143,6 +146,8 @@ public class AuthService {
         user.setRoles(Set.of(role));
 
         User savedUser = userRepository.save(user);
+
+        accountVerificationService.generateOtpAndPublish(user, VerificationPurpose.ACCOUNT_VERIFICATION);
 
         kafkaProducer.sendUserRegisteredEvent(
                 new UserRegisteredEvent(
@@ -253,6 +258,8 @@ public class AuthService {
         // Security: don't reveal whether user exists
         if (user != null) {
             String token = passwordResetService.createPasswordResetToken(user, locale);
+
+            System.out.println("PASSWORD RESET TOKEN: " + token);
 
             kafkaProducer.sendPasswordResetRequestedEvent(
                     new PasswordResetRequestedEvent(

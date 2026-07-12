@@ -148,7 +148,7 @@ public class AccountVerificationService {
         )) {
 
             throw new AuthException(
-                    "otp.invalid",
+                    "otp.mismatch",
                     HttpStatus.BAD_REQUEST
             );
         }
