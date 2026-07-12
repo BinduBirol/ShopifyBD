@@ -212,7 +212,7 @@ public class AuthService {
                 )
         );
 
-        throw new AuthException(reason, status);
+        throw new AuthException(reason, status, String.valueOf(user.getId()));
     }
 
     @Transactional

@@ -32,6 +32,7 @@ export function RegisterView() {
 
     const [successDialogOpen, setSuccessDialogOpen] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
+    const [verifyUserId, setVerifyUserId] = useState<string>('');
 
 
     const schema = useMemo(() => z.object({
@@ -102,6 +103,7 @@ export function RegisterView() {
                     );
 
                     setSuccessDialogOpen(true);
+                    setVerifyUserId(response.correlationId ?? '');
 
                     return;
                 }
@@ -290,15 +292,15 @@ export function RegisterView() {
 
 
             {renderForm}
-            
+
             <SocialLogin />
 
             <AlertDialog
                 open={successDialogOpen}
                 title={t('common.success')}
                 message={successMessage}
-                buttonText={t('auth.signIn')}
-                link="/sign-in"
+                buttonText={t('otp.title')}
+                link={`/verify-account?userId=${verifyUserId}`}
                 onClose={() => setSuccessDialogOpen(false)}
             />
 

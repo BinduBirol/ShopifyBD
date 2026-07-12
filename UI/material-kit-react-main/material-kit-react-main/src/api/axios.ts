@@ -123,4 +123,20 @@ export async function forgotPassword(payload: ForgotPasswordRequest) {
   return response.data;
 }
 
+export async function resendVerificationOtp(userId: string) {
+  const response = await api.post('/v1/user/verify/resend-otp', {
+    userId,
+  });
+
+  return response.data;
+}
+
+export async function verifyAccountOtp(userId: string, otp: string) {
+  const response = await api.post('/v1/user/verify/account/otp', {
+    userId,
+    otp,
+  });
+
+  return response.data;
+}
 export default api;

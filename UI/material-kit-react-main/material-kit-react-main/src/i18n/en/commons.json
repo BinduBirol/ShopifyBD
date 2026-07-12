@@ -93,5 +93,20 @@
     "phoneRequired": "Phone number is required",
     "passwordRequired": "Password is required",
     "passwordMinLength": "Password must be at least 8 characters long"
+  },
+  "otp": {
+    "title": "Verify Account",
+    "description": "Enter the 6-digit verification code sent to your email or mobile.",
+    "code": "Verification Code",
+    "verify": "Verify",
+    "verifying": "Verifying...",
+    "resend": "Resend Code",
+    "resendIn": "Resend Code ({{seconds}}s)",
+    "resent": "A new verification code has been sent.",
+    "required": "Verification code is required.",
+    "invalid": "Please enter a valid 6-digit verification code.",
+    "verificationSuccessful": "Your account has been verified successfully.",
+    "invalidVerificationLink": "Invalid or expired verification link.",
+    "backToLogin": "Back to Sign In"
   }
 }

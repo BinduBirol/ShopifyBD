@@ -40,7 +40,9 @@ public class SecurityConfig {
                                 "/v1/reset-password",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
-                                "/api-docs/**"
+                                "/api-docs/**",
+                                "/v1/user/verify/resend-otp",
+                                "/v1/user/verify/account/otp"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

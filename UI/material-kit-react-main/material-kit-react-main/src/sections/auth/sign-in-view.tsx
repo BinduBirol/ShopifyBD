@@ -40,6 +40,7 @@ import { login } from 'src/api/authApi';
 import { useAuth } from 'src/auth/AuthContext';
 import { authStorage } from 'src/auth/authStorage';
 import SocialLogin from 'src/components/auth/SocialLogin';
+import AlertDialog from 'src/components/dialog/AlertDialog';
 
 
 // ----------------------------------------------------------------------
@@ -63,6 +64,10 @@ export function SignInView() {
 
 
   const sessionExpiredShown = useRef(false);
+
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [verifyUserId, setVerifyUserId] = useState<string>('');
 
 
 
@@ -241,15 +246,18 @@ export function SignInView() {
 
               setVerificationType('EMAIL');
 
+              setVerifyUserId(response.correlationId ?? '');
+
               setVerificationDialogOpen(true);
 
               return;
 
 
-
             case 'phone.not.verified':
 
               setVerificationType('MOBILE');
+
+              setVerifyUserId(response.correlationId ?? '');
 
               setVerificationDialogOpen(true);
 
@@ -576,105 +584,33 @@ export function SignInView() {
       <SocialLogin />
 
 
-      <Dialog
+
+
+
+      <AlertDialog
         open={verificationDialogOpen}
-        onClose={() =>
-          setVerificationDialogOpen(false)
+        title={
+          verificationType === 'EMAIL'
+            ? t('auth.emailVerificationRequired')
+            : t('auth.phoneVerificationRequired')
         }
-        maxWidth="xs"
-        fullWidth
-      >
-
-
-        <DialogTitle>
-
-          {
-            verificationType === 'EMAIL'
-              ? t('auth.emailVerificationRequired')
-              : t('auth.phoneVerificationRequired')
-          }
-
-        </DialogTitle>
-
-
-
-        <DialogContent>
-
-          <DialogContentText>
-
-            {
-              verificationType === 'EMAIL'
-                ? t('auth.emailVerificationDescription')
-                : t('auth.phoneVerificationDescription')
-            }
-
-          </DialogContentText>
-
-
-        </DialogContent>
-
-
-
-
-        <DialogActions>
-
-
-          <Button
-            color="error"
-            variant="outlined"
-            onClick={() =>
-              setVerificationDialogOpen(false)
-            }
-          >
-
-            {t('common.cancel')}
-
-          </Button>
-
-
-
-
-
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => {
-
-
-              setVerificationDialogOpen(false);
-
-
-
-              router.push(
-
-                verificationType === 'EMAIL'
-
-                  ? `/verify-email?email=${encodeURIComponent(identifier)}`
-
-                  : `/verify-phone?phone=${encodeURIComponent(identifier)}`
-
-              );
-
-
-            }}
-          >
-
-            {
-              verificationType === 'EMAIL'
-                ? t('auth.verifyEmail')
-                : t('auth.verifyPhone')
-            }
-
-
-          </Button>
-
-
-
-        </DialogActions>
-
-
-
-      </Dialog>
+        message={
+          verificationType === 'EMAIL'
+            ? t('auth.emailVerificationDescription')
+            : t('auth.phoneVerificationDescription')
+        }
+        buttonText={
+          verificationType === 'EMAIL'
+            ? t('auth.verifyEmail')
+            : t('auth.verifyPhone')
+        }
+        link={
+          verifyUserId
+            ? `/verify-account?userId=${verifyUserId}`
+            : undefined
+        }
+        onClose={() => setVerificationDialogOpen(false)}
+      />
 
 
     </>

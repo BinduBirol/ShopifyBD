@@ -103,7 +103,7 @@ public class AuthUtil {
 
     public void validateUserStatus(User user, LoginType loginType) {
 
-        /*
+
         if (!user.isVerified()) {
 
             String message = switch (loginType) {
@@ -112,9 +112,14 @@ public class AuthUtil {
                 default -> "user.not.verified";
             };
 
-            throw new AuthException(message, HttpStatus.FORBIDDEN);
+
+            throw new AuthException(
+                    message,
+                    HttpStatus.FORBIDDEN,
+                    String.valueOf(user.getId())
+            );
         }
-        */
+
 
         if (!user.isActive()) {
             throw new AuthException(

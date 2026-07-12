@@ -50,6 +50,7 @@ public class GlobalExceptionHandler {
                         .build())
                 .timestamp(LocalDateTime.now())
                 .path(request.getRequestURI())
+                .correlationId(ex.getCorrelationId())
                 .version("v1")
                 .build();
     }

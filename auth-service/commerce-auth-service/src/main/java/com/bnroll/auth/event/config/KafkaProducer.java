@@ -1,6 +1,10 @@
 package com.bnroll.auth.event.config;
 
+import com.bnroll.auth.dto.otp.ResendVerificationOtpRequest;
 import com.bnroll.auth.event.dto.*;
+import com.bnroll.commercedomain.entity.user.User;
+import com.bnroll.enums.VerificationPurpose;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -14,6 +18,7 @@ public class KafkaProducer {
     private static final String USER_REGISTERED_TOPIC = "user-registered";
     private static final String LOGIN_FAILED_TOPIC = "login-failed";
     private static final String LOGIN_SUCCESS_TOPIC = "login-success";
+    private static final String ACCOUNT_VERIFICATION_OTP = "account-verification-otp";
 
 
     public void sendUserRegisteredEvent(UserRegisteredEvent event) {
@@ -62,6 +67,26 @@ public class KafkaProducer {
                 PASSWORD_RESET_SUCCESS_TOPIC,
                 event.email(),
                 event
+        );
+    }
+
+
+    public void sendAccountVerificationOtpEvent(
+            User user,
+            String otp,
+            VerificationPurpose purpose
+    ) {
+
+        kafkaTemplate.send(
+                ACCOUNT_VERIFICATION_OTP,
+                String.valueOf(user.getId()),
+                new VerificationOtpEvent(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getPhone(),
+                        otp,
+                        purpose
+                )
         );
     }
 }
