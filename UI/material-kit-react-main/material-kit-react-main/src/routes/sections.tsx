@@ -12,6 +12,7 @@ import { DashboardLayout } from 'src/layouts/dashboard';
 import ProtectedRoute from 'src/auth/ProtectedRoute';
 import { RegisterView } from 'src/sections/auth/register-view';
 import VerifyAccountView from 'src/pages/verify-account-view';
+import ResetPasswordPage from 'src/pages/password/reset-password';
 
 
 // ----------------------------------------------------------------------
@@ -93,6 +94,15 @@ export const routesSection: RouteObject[] = [
     element: (
       <AuthLayout>
         <VerifyAccountView />
+      </AuthLayout>
+    ),
+  },
+
+  {
+    path: 'reset-password',
+    element: (
+      <AuthLayout>
+        <ResetPasswordPage />
       </AuthLayout>
     ),
   },

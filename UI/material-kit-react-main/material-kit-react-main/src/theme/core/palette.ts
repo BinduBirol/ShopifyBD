@@ -90,18 +90,30 @@ export const grey = createPaletteChannel(themeConfig.palette.grey);
 // Text color
 export const text = {
   light: createPaletteChannel({
-    primary: grey[800],
-    secondary: grey[600],
+    primary: '#2E3138',
+    secondary: '#5F6B7A',
     disabled: grey[500],
+  }),
+
+  dark: createPaletteChannel({
+    primary: '#F4F6F8',
+    secondary: '#9AA7B5',
+    disabled: '#6C7A89',
   }),
 };
 
 // Background color
 export const background = {
   light: createPaletteChannel({
+    default: '#F8F6F2',
     paper: '#FFFFFF',
-    default: grey[100],
-    neutral: grey[200],
+    neutral: '#F2EEE8',
+  }),
+
+  dark: createPaletteChannel({
+    default: '#151A21',
+    paper: '#1E252E',
+    neutral: '#28313B',
   }),
 };
 
@@ -119,6 +131,17 @@ export const baseAction = {
 // Action color
 export const action = {
   light: { ...baseAction, active: grey[600] },
+  dark: {
+    ...baseAction,
+    active: '#9AA7B5',
+
+    hover: 'rgba(255,255,255,0.05)',
+    selected: 'rgba(255,255,255,0.10)',
+    focus: 'rgba(255,255,255,0.14)',
+
+    disabled: 'rgba(255,255,255,0.30)',
+    disabledBackground: 'rgba(255,255,255,0.08)',
+  },
 };
 
 // ----------------------------------------------------------------------
@@ -142,5 +165,12 @@ export const palette: Partial<Record<ThemeColorScheme, ColorSystemOptions['palet
     text: text.light,
     background: background.light,
     action: action.light,
+  },
+
+  dark: {
+    ...basePalette,
+    text: text.dark,
+    background: background.dark,
+    action: action.dark,
   },
 };

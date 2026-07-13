@@ -109,10 +109,21 @@ public class AuthController {
     }
 
     @PostMapping("/v1/reset-password")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void resetPassword(
-            @RequestBody @Valid ResetPasswordRequest request) {
+    public ApiResponse<String> resetPassword(
+            @RequestBody @Valid ResetPasswordRequest request, HttpServletRequest httpRequest, Locale locale) {
 
-        authService.resetPassword(request);
+
+        User user = authService.resetPassword(request);
+
+        String message = messageService.get("password.reset.success", locale);
+
+        return ApiResponse.<String>builder()
+                .success(true)
+                .data(message)
+                .timestamp(LocalDateTime.now())
+                .version("v1")
+                .correlationId(String.valueOf(user.getId()))
+                .path(httpRequest.getRequestURI())
+                .build();
     }
 }

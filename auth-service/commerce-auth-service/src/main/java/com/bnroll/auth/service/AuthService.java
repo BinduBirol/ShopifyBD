@@ -296,7 +296,7 @@ public class AuthService {
     }
 
     @Transactional
-    public void resetPassword(ResetPasswordRequest request) {
+    public User resetPassword(ResetPasswordRequest request) {
 
         PasswordResetToken resetToken =
                 authUtil.validatePasswordResetToken(request.getToken());
@@ -318,5 +318,6 @@ public class AuthService {
                         LocalDateTime.now()
                 )
         );
+        return user;
     }
 }

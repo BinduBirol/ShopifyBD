@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import api from 'src/api/axios';
+import LoadingScreen from 'src/components/loading/loadingScreen';
+import { RouteLoading } from 'src/routes/components/route-loading';
 
 type Props = {
   children: React.ReactNode;
@@ -43,7 +45,8 @@ export default function ProtectedRoute({ children }: Props) {
 
 
   if (loading) {
-    return null;
+    return <LoadingScreen />;
+
   }
 
 

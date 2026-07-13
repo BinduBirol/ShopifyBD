@@ -197,15 +197,6 @@ public class AuthUtil {
             );
         }
 
-        if (!jwtUtil.isTokenValid(
-                token,
-                storedToken.getUser().getEmail()
-        )) {
-            throw new AuthException(
-                    "password.reset.token.invalid",
-                    HttpStatus.BAD_REQUEST
-            );
-        }
 
         return storedToken;
     }

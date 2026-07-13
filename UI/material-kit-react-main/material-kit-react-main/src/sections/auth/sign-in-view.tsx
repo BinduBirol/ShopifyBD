@@ -501,7 +501,7 @@ export function SignInView() {
         fullWidth
         size="large"
         variant="contained"
-        color="inherit"
+        color="primary"
         disabled={loading}
         type="submit"
       >

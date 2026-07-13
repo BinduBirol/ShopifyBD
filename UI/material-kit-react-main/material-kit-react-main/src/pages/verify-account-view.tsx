@@ -315,7 +315,7 @@ export default function VerifyAccountView() {
                 <Button
                     fullWidth
                     variant="contained"
-                    color="inherit"
+                    color="primary"
                     size="large"
                     type="submit"
                     disabled={isSubmitting}

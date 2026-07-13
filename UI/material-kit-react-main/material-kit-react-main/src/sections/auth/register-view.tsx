@@ -230,7 +230,7 @@ export function RegisterView() {
                 fullWidth
                 size="large"
                 variant="contained"
-                color="inherit"
+                color="primary"
                 disabled={loading}
                 type="submit"
             >

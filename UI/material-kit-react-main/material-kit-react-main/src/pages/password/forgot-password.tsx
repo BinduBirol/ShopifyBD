@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
     Box,
@@ -13,69 +14,106 @@ import {
     Typography,
 } from '@mui/material';
 
-import { RouterLink } from 'src/routes/components';
 import { useSnackbar } from 'notistack';
+
+import { RouterLink } from 'src/routes/components';
 import { forgotPassword } from 'src/api/axios';
 import AlertDialog from 'src/components/dialog/AlertDialog';
 
 type LoginType = 'EMAIL' | 'MOBILE';
 
 export default function ForgotPasswordPage() {
+    const { t } = useTranslation();
     const { enqueueSnackbar } = useSnackbar();
 
-    const [loading, setLoading] = useState(false);
-    const { t } = useTranslation();
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertTitle, setAlertTitle] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
 
-    const [loginType, setLoginType] = useState<LoginType>('EMAIL');
-    const [identifier, setIdentifier] = useState('');
+    const schema = z
+        .object({
+            loginType: z.enum(['EMAIL', 'MOBILE']),
+            identifier: z.string().trim(),
+        })
+        .superRefine((data, ctx) => {
+            if (!data.identifier) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    path: ['identifier'],
+                    message: 'validation.required',
+                });
+                return;
+            }
 
+            if (
+                data.loginType === 'EMAIL' &&
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.identifier)
+            ) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    path: ['identifier'],
+                    message: 'register.invalidEmail',
+                });
+            }
+
+            if (
+                data.loginType === 'MOBILE' &&
+                !/^01[3-9]\d{8}$/.test(data.identifier)
+            ) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    path: ['identifier'],
+                    message: 'register.phoneRequired',
+                });
+            }
+        });
+
+    type FormValues = z.infer<typeof schema>;
+
+    const {
+        register,
+        watch,
+        setValue,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm<FormValues>({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            loginType: 'EMAIL',
+            identifier: '',
+        },
+    });
+
+    const loginType = watch('loginType');
     const isEmail = loginType === 'EMAIL';
 
-    const [alertOpen, setAlertOpen] = useState(false);
-    const [alertTitle, setAlertTitle] = useState("");
-    const [alertMessage, setAlertMessage] = useState("");
-
-    const handleSubmit = async () => {
-        if (!identifier) {
-            return;
-        }
-
+    const onSubmit = async (data: FormValues) => {
         try {
-            setLoading(true);
-
-            const response = await forgotPassword({
-                identifier,
-                loginType,
-            });
-
-            console.log('Forgot password response:', response);
-
+            const response = await forgotPassword(data);
 
             if (response.success) {
-                setAlertTitle(t("common.success"));
+                setAlertTitle(t('common.success'));
                 setAlertMessage(response.data);
                 setAlertOpen(true);
-            } else {              
-
+            } else {
                 if (
-                    response.error?.code === "auth.password.reset.already.requested"
+                    response.error?.code ===
+                    'auth.password.reset.already.requested'
                 ) {
-                    setAlertTitle(t("common.error"));
+                    setAlertTitle(t('common.error'));
                     setAlertMessage(response.error.message);
                     setAlertOpen(true);
-                }else {
+                } else {
                     enqueueSnackbar(
-                        response.error?.message ?? t('common.somethingWentWrong'),
+                        response.error?.message ??
+                        t('common.somethingWentWrong'),
                         {
                             variant: 'error',
                         }
                     );
                 }
             }
-
         } catch (error: any) {
-
-
             enqueueSnackbar(
                 error?.response?.data?.error?.message ??
                 t('common.somethingWentWrong'),
@@ -83,92 +121,101 @@ export default function ForgotPasswordPage() {
                     variant: 'error',
                 }
             );
-
-        } finally {
-            setLoading(false);
         }
     };
 
     return (
-        <Stack spacing={3}>
-            <Box>
-                <Typography variant="h4">
-                    {t('auth.forgotPassword.title')}
-                </Typography>
+        <>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                <Stack spacing={3}>
+                    <Box>
+                        <Typography variant="h4">
+                            {t('auth.forgotPassword.title')}
+                        </Typography>
 
-                <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mt: 1 }}
-                >
-                    {t('auth.forgotPassword.description')}
-                </Typography>
-            </Box>
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ mt: 1 }}
+                        >
+                            {t('auth.forgotPassword.description')}
+                        </Typography>
+                    </Box>
 
-            <TextField
-                select
-                fullWidth
-                label={t('auth.forgotPassword.loginType')}
-                value={loginType}
-                onChange={(e) => setLoginType(e.target.value as LoginType)}
-            >
-                <MenuItem value="EMAIL">
-                    {t('auth.forgotPassword.email')}
-                </MenuItem>
+                    <TextField
+                        select
+                        fullWidth
+                        label={t('auth.forgotPassword.loginType')}
+                        value={loginType}
+                        onChange={(e) =>
+                            setValue(
+                                'loginType',
+                                e.target.value as LoginType,
+                                {
+                                    shouldValidate: true,
+                                }
+                            )
+                        }
+                    >
+                        <MenuItem value="EMAIL">
+                            {t('auth.forgotPassword.email')}
+                        </MenuItem>
 
-                <MenuItem value="MOBILE">
-                    {t('auth.forgotPassword.phone')}
-                </MenuItem>
-            </TextField>
+                        <MenuItem value="MOBILE">
+                            {t('auth.forgotPassword.phone')}
+                        </MenuItem>
+                    </TextField>
 
-            <TextField
-                fullWidth
-                required
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
-                label={
-                    isEmail
-                        ? t('auth.forgotPassword.email')
-                        : t('auth.forgotPassword.phone')
-                }
-                placeholder={
-                    isEmail
-                        ? t('auth.forgotPassword.emailPlaceholder')
-                        : t('auth.forgotPassword.phonePlaceholder')
-                }
-            />
+                    <TextField
+                        fullWidth
+                        label={
+                            isEmail
+                                ? t('auth.forgotPassword.email')
+                                : t('auth.forgotPassword.phone')
+                        }
+                        placeholder={
+                            isEmail
+                                ? t('auth.forgotPassword.emailPlaceholder')
+                                : t('auth.forgotPassword.phonePlaceholder')
+                        }
+                        error={!!errors.identifier}
+                        helperText={
+                            errors.identifier
+                                ? t(errors.identifier.message!)
+                                : ''
+                        }
+                        {...register('identifier')}
+                    />
 
-            <Button
-                fullWidth
-                size="large"
-                variant="contained"
-                onClick={handleSubmit}
-                disabled={loading}
-            >
-                {loading
-                    ? t('common.loading')
-                    : loginType === 'EMAIL'
-                        ? t('auth.forgotPassword.sendResetLink')
-                        : t('auth.forgotPassword.sendOtp')}
-            </Button>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        size="large"
+                        variant="contained"
+                        disabled={isSubmitting}
+                    >
+                        {t('auth.forgotPassword.sendResetLink')}
+                    </Button>
 
-            <Typography
-                variant="body2"
-                color="text.secondary"
-                align="center"
-            >
-                {t('auth.forgotPassword.info')}
-            </Typography>
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        align="center"
+                    >
+                        {t('auth.forgotPassword.info')}
+                    </Typography>
 
-            <Link
-                component={RouterLink}
-                href="/sign-in"
-                variant="body2"
-                underline="hover"
-                sx={{ alignSelf: 'center' }}
-            >
-                {t('auth.forgotPassword.backToSignIn')}
-            </Link>
+                    <Link
+                        component={RouterLink}
+                        href="/sign-in"
+                        variant="body2"
+                        underline="hover"
+                        sx={{ alignSelf: 'center' }}
+                    >
+                        {t('auth.forgotPassword.backToSignIn')}
+                    </Link>
+                </Stack>
+            </form>
 
             <AlertDialog
                 open={alertOpen}
@@ -176,13 +223,6 @@ export default function ForgotPasswordPage() {
                 message={alertMessage}
                 onClose={() => setAlertOpen(false)}
             />
-
-
-
-        </Stack>
-
-
-
-
+        </>
     );
 }

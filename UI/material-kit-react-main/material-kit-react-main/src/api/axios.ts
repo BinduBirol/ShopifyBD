@@ -18,6 +18,22 @@ const refreshApi = axios.create({
   },
 });
 
+export const publicApi = axios.create({
+  baseURL: 'http://localhost:8081/auth',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+publicApi.interceptors.request.use(
+  (config) => {
+    config.headers['Accept-Language'] = i18n.language;
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
@@ -139,4 +155,15 @@ export async function verifyAccountOtp(userId: string, otp: string) {
 
   return response.data;
 }
+
+export interface ResetPasswordRequest {
+  token: string;
+  password: string;
+}
+
+export const resetPassword = async (request: ResetPasswordRequest) => {
+  const response = await publicApi.post('/v1/reset-password', request);
+
+  return response.data;
+};
 export default api;

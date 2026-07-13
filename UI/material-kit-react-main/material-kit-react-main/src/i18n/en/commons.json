@@ -41,6 +41,15 @@
       "info": "You will receive a password reset link or a one-time password (OTP) depending on the selected login method.",
       "success": "Password reset instructions have been sent successfully.",
       "error": "Unable to process your request. Please try again."
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "description": "Enter your new password below.",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "resetPassword": "Reset Password",
+      "backToSignIn": "Back to Sign In",
+      "invalidToken": "The password reset link is invalid or has expired."
     }
   },
   "business": {
@@ -109,5 +118,13 @@
     "invalidVerificationLink": "Invalid or expired verification link.",
     "backToLogin": "Back to Sign In",
     "verificationFailed": "Verification failed. Please try again."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "invalidPhone": "Please enter a valid phone number.",
+    "passwordMinLength": "Password must be at least 8 characters.",
+    "passwordMaxLength": "Password must not exceed 100 characters.",
+    "passwordMismatch": "Passwords do not match."
   }
 }
