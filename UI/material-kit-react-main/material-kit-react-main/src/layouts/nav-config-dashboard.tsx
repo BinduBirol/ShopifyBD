@@ -46,12 +46,12 @@ export const navData: NavItem[] = [
 
       },
       {
-        title: 'nav.units',
-        path: '/units',
+        title: 'nav.myFacilities',
+        path: '/property/facility/list',
       },
       {
-        title: 'nav.leases',
-        path: '/leases',
+        title: 'facility.create',
+        path: '/property/facility/create',
       },
     ],
   },

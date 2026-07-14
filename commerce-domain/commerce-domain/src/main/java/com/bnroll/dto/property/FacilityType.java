@@ -1,4 +1,4 @@
-package com.bnroll.property.entity;
+package com.bnroll.dto.property;
 
 public enum FacilityType {
 

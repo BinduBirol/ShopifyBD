@@ -68,7 +68,8 @@
     "somethingWentWrong": "Something went wrong.",
     "continue": "Continue",
     "success": "Request successful",
-    "error": "Error"
+    "error": "Error",
+    "select": "Select..."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -90,7 +91,8 @@
     "invoices": "Invoices",
     "reports": "Reports",
     "notifications": "Notifications",
-    "members": "Members"
+    "members": "Members",
+    "myFacilities" : "My Facilities"
   },
   "register": {
     "title": "Create Account",
@@ -147,5 +149,42 @@
     "SECURITY_GUARD": "Security Guard",
     "MAINTENANCE_STAFF": "Maintenance Staff",
     "TENANT": "Tenant"
+  },
+
+  "facility": {
+    "create": "Create Facility",
+    "createdSuccessfully": "Facility created successfully",
+
+    "name": "Facility Name",
+    "type": "Facility Type",
+    "role": "Your Role",
+
+    "addressLine1": "Address Line 1",
+    "addressLine2": "Address Line 2",
+
+    "city": "City",
+    "country": "Country",
+    "postalCode": "Postal Code",
+
+    "description": "Description",
+
+    "validation": {
+      "nameRequired": "Facility name is required.",
+      "typeRequired": "Facility type is required.",
+      "addressLine1Required": "Address Line 1 is required.",
+      "roleRequired": "Role is required."
+    }
+  },
+  
+
+  "facilityType": {
+    "RESIDENTIAL": "Residential",
+    "COMMERCIAL": "Commercial",
+    "MIXED_USE": "Mixed Use",
+    "INDUSTRIAL": "Industrial",
+    "HOSPITALITY": "Hospitality",
+    "EDUCATIONAL": "Educational",
+    "GOVERNMENT": "Government",
+    "OTHER": "Other"
   }
 }

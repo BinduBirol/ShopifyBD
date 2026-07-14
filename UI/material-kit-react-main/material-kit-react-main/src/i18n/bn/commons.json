@@ -68,7 +68,8 @@
     "somethingWentWrong": "কিছু ভুল হয়েছে।",
     "continue": "চালিয়ে যান",
     "success": "সফল হয়েছে",
-    "error": "ত্রুটি"
+    "error": "ত্রুটি",
+    "select": "নির্বাচন করুন..."
   },
   "nav": {
     "dashboard": "ড্যাশবোর্ড",
@@ -90,7 +91,8 @@
     "invoices": "চালান",
     "reports": "রিপোর্ট",
     "notifications": "নোটিফিকেশন",
-    "members": "সদস্য"
+    "members": "সদস্য",
+    "myFacilities": "আমার স্থাপনাসমূহ"
   },
   "register": {
     "title": "অ্যাকাউন্ট তৈরি করুন",
@@ -146,5 +148,41 @@
     "SECURITY_GUARD": "নিরাপত্তা প্রহরী",
     "MAINTENANCE_STAFF": "রক্ষণাবেক্ষণ কর্মী",
     "TENANT": "ভাড়াটিয়া"
+  },
+
+  "facility": {
+    "create": "নতুন স্থাপনা যোগ করুন",
+    "createdSuccessfully": "স্থাপনা সফলভাবে যোগ হয়েছে।",
+
+    "name": "স্থাপনার নাম",
+    "type": "স্থাপনার ধরন",
+    "role": "আপনার ভূমিকা",
+
+    "addressLine1": "ঠিকানা (লাইন ১)",
+    "addressLine2": "ঠিকানা (লাইন ২)",
+
+    "city": "শহর",
+    "country": "দেশ",
+    "postalCode": "পোস্টাল কোড",
+
+    "description": "বিবরণ",
+
+    "validation": {
+      "nameRequired": "স্থাপনার নাম আবশ্যক।",
+      "typeRequired": "স্থাপনার ধরন নির্বাচন করুন।",
+      "addressLine1Required": "ঠিকানা (লাইন ১) আবশ্যক।",
+      "roleRequired": "ভূমিকা নির্বাচন করুন।"
+    }
+  },
+
+  "facilityType": {
+    "RESIDENTIAL": "আবাসিক",
+    "COMMERCIAL": "বাণিজ্যিক",
+    "MIXED_USE": "মিশ্র ব্যবহার",
+    "INDUSTRIAL": "শিল্প",
+    "HOSPITALITY": "আতিথেয়তা",
+    "EDUCATIONAL": "শিক্ষাপ্রতিষ্ঠান",
+    "GOVERNMENT": "সরকারি",
+    "OTHER": "অন্যান্য"
   }
 }

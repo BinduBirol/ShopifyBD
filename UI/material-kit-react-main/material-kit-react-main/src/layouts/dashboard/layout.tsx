@@ -1,5 +1,5 @@
 import type { Breakpoint } from '@mui/material/styles';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { merge } from 'es-toolkit';
 import { useBoolean } from 'minimal-shared/hooks';
@@ -12,12 +12,12 @@ import { _langs, _notifications } from 'src/_mock';
 
 import { NavMobile, NavDesktop } from './nav';
 import { layoutClasses } from '../core/classes';
-import { useAccountMenu  } from '../nav-config-account';
+import { useAccountMenu } from '../nav-config-account';
 import { dashboardLayoutVars } from './css-vars';
 import { navData } from '../nav-config-dashboard';
 import { MainSection } from '../core/main-section';
 import { Searchbar } from '../components/searchbar';
-import { _workspaces } from '../nav-config-workspace';
+import { getWorkspaces } from '../nav-config-workspace';
 import { MenuButton } from '../components/menu-button';
 import { HeaderSection } from '../core/header-section';
 import { LayoutSection } from '../core/layout-section';
@@ -34,6 +34,7 @@ import { RouteLoading } from '../../routes/components/route-loading';
 import { useRouteLoading } from '../../routes/hooks/use-route-loading';
 
 import { useTranslation } from 'react-i18next';
+import { WorkspacesPopoverProps } from '../components/workspaces-popover';
 
 // ----------------------------------------------------------------------
 
@@ -67,6 +68,23 @@ export function DashboardLayout({
   const { t } = useTranslation();
   const accountMenu = useAccountMenu();
 
+  const [workspaces, setWorkspaces] = useState<
+    WorkspacesPopoverProps['data']
+  >([]);
+
+  useEffect(() => {
+    const loadWorkspaces = async () => {
+      try {
+        const data = await getWorkspaces();
+        setWorkspaces(data);
+      } catch (error) {
+        console.error('Failed to load workspaces', error);
+      }
+    };
+
+    loadWorkspaces();
+  }, []);
+
   const renderHeader = () => {
     const headerSlotProps: HeaderSectionProps['slotProps'] = {
       container: { maxWidth: false },
@@ -85,7 +103,7 @@ export function DashboardLayout({
             onClick={onOpen}
             sx={{ mr: 1, ml: -1, [theme.breakpoints.up(layoutQuery)]: { display: 'none' } }}
           />
-          <NavMobile data={navData} open={open} onClose={onClose} workspaces={_workspaces} />
+          <NavMobile data={navData} open={open} onClose={onClose} workspaces={workspaces} />
         </>
       ),
 
@@ -118,32 +136,32 @@ export function DashboardLayout({
   const renderFooter = () => null;
 
   const renderMain = () => (
-  <MainSection {...slotProps?.main}>
-    {loading ? (
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '60vh',
-        }}
-      >
-        <RouteLoading />
-      </Box>
-    ) : (
-      children
-    )}
-  </MainSection>
-);
+    <MainSection {...slotProps?.main}>
+      {loading ? (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '60vh',
+          }}
+        >
+          <RouteLoading />
+        </Box>
+      ) : (
+        children
+      )}
+    </MainSection>
+  );
 
   return (
     <>
-      {/* ROUTE LOADING OVERLAY {loading && <RouteLoading />} */}      
+      {/* ROUTE LOADING OVERLAY {loading && <RouteLoading />} */}
 
       <LayoutSection
         headerSection={renderHeader()}
         sidebarSection={
-          <NavDesktop data={navData} layoutQuery={layoutQuery} workspaces={_workspaces} />
+          <NavDesktop data={navData} layoutQuery={layoutQuery} workspaces={workspaces} />
         }
         footerSection={renderFooter()}
         cssVars={{ ...dashboardLayoutVars(theme), ...cssVars }}

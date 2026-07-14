@@ -1,7 +1,7 @@
 package com.bnroll.property.controller;
 
 import com.bnroll.common.dto.response.ApiResponse;
-import com.bnroll.property.dto.FacilityRequest;
+import com.bnroll.dto.property.FacilityDto;
 import com.bnroll.property.entity.Facility;
 import com.bnroll.property.security.UserPrincipal;
 import com.bnroll.property.service.FacilityService;
@@ -24,7 +24,7 @@ public class FacilityController {
     private final MessageSource messageSource;
 
     @PostMapping("/create")
-    public ApiResponse<String> create(@Valid @RequestBody FacilityRequest request, HttpServletRequest httpServletRequest, Locale locale, Authentication authentication) {
+    public ApiResponse<String> create(@Valid @RequestBody FacilityDto request, HttpServletRequest httpServletRequest, Locale locale, Authentication authentication) {
 
         UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
 
@@ -42,16 +42,16 @@ public class FacilityController {
     }
 
     @GetMapping("/get")
-    public ApiResponse<List<FacilityRequest>> getFacilities(
+    public ApiResponse<List<FacilityDto>> getFacilities(
             HttpServletRequest httpServletRequest,
             Locale locale,
             Authentication authentication
     ) {
         UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
 
-        List<FacilityRequest> list = facilityService.findAllByUserId(user.id());
+        List<FacilityDto> list = facilityService.findAllByUserId(user.id());
 
-        return ApiResponse.<List<FacilityRequest>>builder()
+        return ApiResponse.<List<FacilityDto>>builder()
                 .success(true)
                 .data(list)
                 .timestamp(LocalDateTime.now())

@@ -1,18 +1,21 @@
-package com.bnroll.property.dto;
+package com.bnroll.dto.property;
 
 import com.bnroll.commercedomain.enums.user.RoleName;
-import com.bnroll.property.entity.FacilityType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Schema(description = "Request object for creating or updating a facility")
-public class FacilityRequest {
+@Schema(description = "Request/Response object for creating, getting or updating a facility")
+public class FacilityDto {
 
     @NotBlank(message = "facility.name.required")
     @Size(max = 150, message = "facility.name.maxLength")
@@ -95,4 +98,11 @@ public class FacilityRequest {
             example = "OWNER"
     )
     private RoleName userRole;
+
+    @Schema(
+            description = "Facility ID",
+            example = "1",
+            accessMode = Schema.AccessMode.READ_ONLY
+    )
+    private UUID id;
 }

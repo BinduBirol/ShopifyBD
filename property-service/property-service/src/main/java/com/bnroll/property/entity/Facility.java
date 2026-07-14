@@ -1,6 +1,7 @@
 package com.bnroll.property.entity;
 
 import com.bnroll.commercedomain.entity.BaseEntity;
+import com.bnroll.dto.property.FacilityType;
 import jakarta.persistence.*;
 import lombok.*;
 
