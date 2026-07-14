@@ -24,9 +24,11 @@ public class FacilityController {
     private final MessageSource messageSource;
 
     @PostMapping("/create")
-    public ApiResponse<String> create(@Valid @RequestBody FacilityRequest request, HttpServletRequest httpServletRequest, Locale locale) {
+    public ApiResponse<String> create(@Valid @RequestBody FacilityRequest request, HttpServletRequest httpServletRequest, Locale locale, Authentication authentication) {
 
-        Facility facility = facilityService.create(request);
+        UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
+
+        Facility facility = facilityService.create(request, user);
 
         String responseMessage = messageSource.getMessage("facility.created", null, locale);
         return ApiResponse.<String>builder()

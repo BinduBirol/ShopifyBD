@@ -21,12 +21,12 @@ spring:
     active: dev
 
   datasource:
-    url: JDBC:mysql://127.0.0.1:3306/commerce_property
+    url: jdbc:mysql://127.0.0.1:3306/commerce_property
     username: commerce_dev
     password: Bnroll@2003
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-    Hikari:
+    hikari:
       maximum-pool-size: 10
       minimum-idle: 5
       idle-timeout: 30000
@@ -53,6 +53,11 @@ logging:
     com.bnroll: DEBUG
     org.springframework.security: DEBUG
     com.zaxxer.hikari: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.boot.autoconfigure.orm.jpa: DEBUG
+    org.hibernate.tool.schema: DEBUG
 
 jwt:
   secret: 6d8b4d5f1c8a9e73b2f4d1a7c9e8f6b5a1d3e7f9c2b4a6d8e1f3c5b7a9d2e4f6
@@ -66,7 +71,7 @@ jwt:
     expiration: 900000          # 15 minutes
 
 
-spring doc:
+springdoc:
   api-docs:
     path: /api-docs
 

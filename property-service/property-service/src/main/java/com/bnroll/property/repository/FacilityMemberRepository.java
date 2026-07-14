@@ -11,9 +11,9 @@ import java.util.UUID;
 public interface FacilityMemberRepository extends CrudRepository<FacilityMember, UUID> {
 
     @Query("""
-                select fm.facility 
+                select fm
                 from FacilityMember fm
                 where fm.userId = :userId
             """)
-    List<Facility> findFacilitiesByUserId(Long userId);
+    List<FacilityMember> findByUserId(Long userId);
 }

@@ -5,9 +5,11 @@ import com.bnroll.property.entity.Facility;
 import com.bnroll.property.entity.FacilityMember;
 import com.bnroll.property.repository.FacilityMemberRepository;
 import com.bnroll.property.repository.FacilityRepository;
+import com.bnroll.property.security.UserPrincipal;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,23 +21,30 @@ public class FacilityService {
     private final FacilityMemberRepository facilityMemberRepository;
 
     public List<FacilityRequest> findAllByUserId(Long userId) {
-        List<Facility> facilities = facilityMemberRepository.findFacilitiesByUserId(userId);
+        List<FacilityMember> facilityMemberList = facilityMemberRepository.findByUserId(userId);
 
-        return facilities.stream()
-                .map(facility -> FacilityRequest.builder()
-                        .name(facility.getName())
-                        .type(facility.getType())
-                        .addressLine1(facility.getAddressLine1())
-                        .addressLine2(facility.getAddressLine2())
-                        .city(facility.getCity())
-                        .country(facility.getCountry())
-                        .postalCode(facility.getPostalCode())
-                        .description(facility.getDescription())
-                        .build())
+        return facilityMemberList
+                .stream()
+                .map(fm -> {
+                    Facility facility = fm.getFacility();
+
+                    return FacilityRequest.builder()
+                            .name(facility.getName())
+                            .type(facility.getType())
+                            .addressLine1(facility.getAddressLine1())
+                            .addressLine2(facility.getAddressLine2())
+                            .city(facility.getCity())
+                            .country(facility.getCountry())
+                            .postalCode(facility.getPostalCode())
+                            .description(facility.getDescription())
+                            .userRole(fm.getRole())
+                            .build();
+                })
                 .toList();
     }
 
-    public Facility create(@Valid FacilityRequest request) {
+    @Transactional
+    public Facility create(@Valid FacilityRequest request, UserPrincipal user) {
 
 
         Facility facility = Facility.builder()
@@ -50,6 +59,15 @@ public class FacilityService {
                 .build();
 
 
-        return facilityRepository.save(facility);
+        Facility saveFacility = facilityRepository.save(facility);
+
+        FacilityMember member = FacilityMember.builder()
+                .facility(saveFacility)
+                .userId(user.id())
+                .role(request.getUserRole())
+                .build();
+        facilityMemberRepository.save(member);
+
+        return saveFacility;
     }
 }

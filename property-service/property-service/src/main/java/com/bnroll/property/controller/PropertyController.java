@@ -51,6 +51,9 @@ public class PropertyController {
             result.put("driver", con.getMetaData().getDriverName());
 
             return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

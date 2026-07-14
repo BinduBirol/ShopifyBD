@@ -1,4 +1,4 @@
-package com.bnroll.auth.security.ratelimit;
+package com.bnroll.annotations.ratelimit;
 
 import com.bnroll.commercedomain.exception.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,8 +10,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
-
 @Aspect
 @Component
 @RequiredArgsConstructor
@@ -21,28 +19,32 @@ public class RateLimitAspect {
     private final HttpServletRequest request;
 
     @Around("@annotation(rateLimit)")
-    public Object handleRateLimit(ProceedingJoinPoint joinPoint,
-                                  RateLimit rateLimit) throws Throwable {
+    public Object handleRateLimit(
+            ProceedingJoinPoint joinPoint,
+            RateLimit rateLimit
+    ) throws Throwable {
 
-        String ip = request.getRemoteAddr();
+        String key = buildKey(joinPoint);
 
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = signature.getMethod();
-
-        String methodName = method.getName();
-
-        String key = methodName + ":" + ip;
-
-        boolean allowed = rateLimitService.allowRequest(
+        if (!rateLimitService.allowRequest(
                 key,
                 rateLimit.limit(),
-                rateLimit.durationSeconds()
-        );
+                rateLimit.durationSeconds())) {
 
-        if (!allowed) {
-            throw new AuthException("too.many.requests", HttpStatus.TOO_MANY_REQUESTS);
+            throw new AuthException(
+                    "too.many.requests",
+                    HttpStatus.TOO_MANY_REQUESTS
+            );
         }
 
         return joinPoint.proceed();
+    }
+
+    private String buildKey(ProceedingJoinPoint joinPoint) {
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+
+        return signature.getMethod().getName()
+                + ":"
+                + request.getRemoteAddr();
     }
 }

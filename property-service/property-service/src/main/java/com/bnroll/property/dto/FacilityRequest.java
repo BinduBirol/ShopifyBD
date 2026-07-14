@@ -1,5 +1,6 @@
 package com.bnroll.property.dto;
 
+import com.bnroll.commercedomain.enums.user.RoleName;
 import com.bnroll.property.entity.FacilityType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
@@ -87,4 +88,11 @@ public class FacilityRequest {
             maxLength = 500
     )
     private String description;
+
+    @NotNull(message = "facility.role.required")
+    @Schema(
+            description = "Role of the user creating the facility",
+            example = "OWNER"
+    )
+    private RoleName userRole;
 }

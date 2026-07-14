@@ -9,6 +9,9 @@ import lombok.*;
 @Table(name = "facility_member")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class FacilityMember extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

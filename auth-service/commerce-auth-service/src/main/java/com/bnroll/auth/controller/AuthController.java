@@ -1,10 +1,11 @@
 package com.bnroll.auth.controller;
 
+import com.bnroll.annotations.ratelimit.RateLimit;
 import com.bnroll.auth.dto.*;
 import com.bnroll.auth.dto.forgetpassword.ForgotPasswordRequest;
 import com.bnroll.auth.dto.forgetpassword.ResetPasswordRequest;
 import com.bnroll.auth.entity.user.User;
-import com.bnroll.auth.security.ratelimit.RateLimit;
+
 import com.bnroll.auth.service.AuthService;
 
 import com.bnroll.commercedomain.event.MeResponse;

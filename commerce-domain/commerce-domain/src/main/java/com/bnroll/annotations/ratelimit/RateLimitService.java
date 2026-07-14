@@ -1,4 +1,4 @@
-package com.bnroll.auth.security.ratelimit;
+package com.bnroll.annotations.ratelimit;
 
 import io.github.bucket4j.*;
 import org.springframework.stereotype.Service;
