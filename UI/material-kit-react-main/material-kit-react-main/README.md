@@ -1,48 +1,199 @@
-## Minimal UI ([Free version](https://free.minimals.cc/))
+# PropertyOS UI
 
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
+A modern React-based administrative dashboard for **PropertyOS**, a multi-tenant Property Management SaaS platform. The project is built by customizing the free version of a Material UI dashboard template into a scalable property management system.
 
-![preview](public/assets/images/minimal-free-preview.jpg)
+## Overview
 
-> Free React Admin Dashboard made with Material-UI components and React + Vite.js.
+PropertyOS is designed to manage residential and commercial properties from a single platform. The UI communicates with multiple backend microservices and provides a clean, responsive, and multilingual user experience.
 
-## Pages
+## Technology Stack
 
-- [Dashboard](https://free.minimals.cc/)
-- [Users](https://free.minimals.cc/user)
-- [Products](https://free.minimals.cc/products)
-- [Blog](https://free.minimals.cc/blog)
-- [Sign in](https://free.minimals.cc/sign-in)
-- [Not found](https://free.minimals.cc/404)
+* React
+* TypeScript
+* Material UI (MUI)
+* React Router
+* React Hook Form
+* React i18next
+* Axios
+* Vite
 
-## Quick start
+## Current Features
 
-- Clone the repo: `git clone https://github.com/minimal-ui-kit/material-kit-react.git`
-- Recommended: `Node.js v20.x`
-- **Install:** `npm i` or `yarn install`
-- **Start:** `npm run dev` or `yarn dev`
-- **Build:** `npm run build` or `yarn build`
-- Open browser: `http://localhost:3039`
+### Authentication
 
-## Upgrade to PRO Version
+* JWT-based authentication
+* Access token and refresh token support
+* Automatic token refresh
+* Request timeout handling
+* Centralized Axios configuration
 
-| Minimal Free                | [Minimal Pro](https://material-ui.com/store/items/minimal-dashboard/)                                   |
-| :-------------------------- | :------------------------------------------------------------------------------------------------------ |
-| **6** Pages                 | **70+** Pages                                                                                           |
-| **Partial** theme customize | **Fully** theme customize                                                                               |
-| -                           | **Next.js** version                                                                                     |
-| -                           | **TypeScript** version (Standard Plus and Extended license)                                             |
-| -                           | Design **Figma** file (Standard Plus and Extended license)                                              |
-| -                           | Authentication with **Amplify**, **Auth0**, **JWT**, **Firebase** and **Supabase**                      |
-| -                           | Light/dark mode, right-to-left, form validation... ([+more components](https://minimals.cc/components)) |
-| -                           | Complete users flows                                                                                    |
-| -                           | 1 year of free updates / 6 months of technical support                                                  |
-| -                           | Learn more: [Package & license](https://docs.minimals.cc/package)                                       |
+### Workspace Management
+
+A workspace represents a facility/property that the current user can access.
+
+Features include:
+
+* Workspace switcher
+* Active workspace persistence using Local Storage
+* Automatic restoration of the last selected workspace
+* Active workspace highlighting
+* Workspace synchronization across the application
+
+## Facility Management
+
+Current implementation includes:
+
+* Facility listing
+* Create Facility page
+* Responsive facility creation form
+* Facility type support
+* Active facility selection
+
+## Internationalization (i18n)
+
+The application supports multiple languages using **react-i18next**.
+
+Currently supported:
+
+* English
+* বাংলা (Bangla)
+
+Implemented localization includes:
+
+* Navigation
+* Authentication pages
+* Facility pages
+* User roles
+* Facility types
+* Validation messages
+* Error pages
+* Common UI components
+
+The application dynamically switches language without requiring a page refresh.
+
+## Error Handling
+
+Implemented global error handling includes:
+
+* Server unavailable page
+* Backend connection failure handling
+* Axios request timeout support
+* Friendly error messages
+* Localized error pages
+
+## Responsive Design
+
+The UI is optimized for:
+
+* Desktop
+* Laptop
+* Tablet
+* Mobile devices
+
+Responsive improvements include:
+
+* Adaptive spacing
+* Flexible layouts
+* Mobile-friendly forms
+* Responsive workspace selector
+
+## Project Structure
+
+```
+src/
+├── api/
+│   ├── auth/
+│   ├── property/
+│   └── common/
+├── components/
+├── contexts/
+├── hooks/
+├── layouts/
+├── locales/
+│   ├── en/
+│   └── bn/
+├── pages/
+├── routes/
+├── sections/
+│   ├── auth/
+│   ├── dashboard/
+│   ├── facility/
+│   └── error/
+├── theme/
+├── types/
+└── utils/
+```
+
+## Backend Integration
+
+The frontend communicates with multiple Spring Boot microservices.
+
+Current integrations include:
+
+* Authentication Service
+* Property Service
+
+Communication is performed through REST APIs using Axios.
+
+## UI Improvements
+
+Recent enhancements include:
+
+* Workspace context management
+* Active workspace persistence
+* Facility creation workflow
+* Reusable server error page
+* Improved responsive layouts
+* Centralized Axios configuration
+* Request timeout support
+* Shared interceptor architecture
+* English and Bangla localization
+* Cleaner page titles and metadata
+* General UI cleanup and consistency improvements
+
+## Roadmap
+
+Upcoming features include:
+
+* Facility management (Edit/Delete)
+* Building management
+* Floor management
+* Unit management
+* Tenant management
+* Lease management
+* Visitor management
+* Maintenance requests
+* Staff management
+* Role-based permissions
+* Notifications
+* Dashboard analytics
+* Reports
+* Payment management
+* Document management
+* File uploads
+* Audit logs
+* Dark mode improvements
+
+## Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
 
 ## License
 
-Distributed under the [MIT](https://github.com/minimal-ui-kit/minimal.free/blob/main/LICENSE.md) license.
-
-## Contact us
-
-Email: support@minimals.cc
+This project is built by customizing the free Material UI dashboard template and extends it into a complete Property Management SaaS platform for learning, development, and production use.
