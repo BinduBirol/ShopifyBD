@@ -22,6 +22,7 @@ import {
 
 import { Facility, FacilityType } from 'src/types/property/facility';
 import { RoleName } from 'src/types/auth/userRole';
+import { DashboardContent } from 'src/layouts/dashboard';
 
 export function FacilityCreateView() {
     const { t } = useTranslation();
@@ -149,155 +150,154 @@ export function FacilityCreateView() {
     );
 
     return (
-        <Card
-            sx={{
-                p: 4,
-                mx: {
-                    xs: 2,
-                    sm: 3,
-                    md: 4,
-                    lg: 6,
-                    xl: 8,
-                },
-                mb: 6
-            }}
-        >
+        <DashboardContent>
+
             <Typography variant="h4" sx={{ mb: 4 }}>
                 {t('facility.create')}
             </Typography>
 
-            <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-                <Grid container spacing={3}>
-                    <Grid size={{ xs: 12, md: 4 }}>
-                        <TextField
-                            fullWidth
-                            label={t('facility.name')}
-                            {...register('name')}
-                            error={!!errors.name}
-                            helperText={errors.name?.message}
-                        />
-                    </Grid>
+            <Card
+                sx={{
+                    p: 4,
 
-                    <Grid size={{ xs: 12, md: 4 }}>
-                        <TextField
-                            select
-                            fullWidth
-                            label={t('facility.type')}
-                            {...register('type')}
-                            error={!!errors.type}
-                            helperText={errors.type?.message}
-                        >
-                            <MenuItem value="">
-                                <em>{t('common.select')}</em>
-                            </MenuItem>
-
-                            {facilityTypeOptions.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid>
-
-                    <Grid size={{ xs: 12, md: 4 }}>
-                        <TextField
-                            select
-                            fullWidth
-                            label={t('facility.role')}
-                            {...register('userRole')}
-                            error={!!errors.userRole}
-                            helperText={errors.userRole?.message}
-                        >
-                            <MenuItem value="">
-                                <em>{t('common.select')}</em>
-                            </MenuItem>
-
-                            {roleOptions.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid>
+                }}
+            >
 
 
+                <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+                    <Grid container spacing={3}>
+                        <Grid size={{ xs: 12, md: 4 }}>
+                            <TextField
+                                fullWidth
+                                label={t('facility.name')}
+                                {...register('name')}
+                                error={!!errors.name}
+                                helperText={errors.name?.message}
+                            />
+                        </Grid>
 
-                    <Grid size={{ xs: 12, md: 6 }}>
-                        <TextField
-                            fullWidth
-                            label={t('facility.addressLine1')}
-                            {...register('addressLine1')}
-                            error={!!errors.addressLine1}
-                            helperText={errors.addressLine1?.message}
-                        />
-                    </Grid>
-
-                    <Grid size={{ xs: 12, md: 6 }}>
-                        <TextField
-                            fullWidth
-                            label={t('facility.addressLine2')}
-                            {...register('addressLine2')}
-                        />
-                    </Grid>
-
-                    <Grid size={{ xs: 12, md: 4 }}>
-                        <TextField
-                            fullWidth
-                            label={t('facility.city')}
-                            {...register('city')}
-                        />
-                    </Grid>
-
-                    <Grid size={{ xs: 12, md: 4 }}>
-                        <TextField
-                            fullWidth
-                            label={t('facility.country')}
-                            {...register('country')}
-                        />
-                    </Grid>
-
-                    <Grid size={{ xs: 12, md: 4 }}>
-                        <TextField
-                            fullWidth
-                            label={t('facility.postalCode')}
-                            {...register('postalCode')}
-                        />
-                    </Grid>
-
-                    <Grid size={12}>
-                        <TextField
-                            fullWidth
-                            multiline
-                            rows={4}
-                            label={t('facility.description')}
-                            {...register('description')}
-                        />
-                    </Grid>
-
-
-
-                    <Grid size={12}>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'flex-end',
-                                mt: 2,
-                            }}
-                        >
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                disabled={loading}
-                                size='large'
+                        <Grid size={{ xs: 12, md: 4 }}>
+                            <TextField
+                                select
+                                fullWidth
+                                label={t('facility.type')}
+                                {...register('type')}
+                                error={!!errors.type}
+                                helperText={errors.type?.message}
                             >
-                                {loading
-                                    ? t('common.creating')
-                                    : t('facility.create')}
-                            </Button>
-                        </Box>
+                                <MenuItem value="">
+                                    <em>{t('common.select')}</em>
+                                </MenuItem>
+
+                                {facilityTypeOptions.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+
+                        <Grid size={{ xs: 12, md: 4 }}>
+                            <TextField
+                                select
+                                fullWidth
+                                label={t('facility.role')}
+                                {...register('userRole')}
+                                error={!!errors.userRole}
+                                helperText={errors.userRole?.message}
+                            >
+                                <MenuItem value="">
+                                    <em>{t('common.select')}</em>
+                                </MenuItem>
+
+                                {roleOptions.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+
+
+
+                        <Grid size={{ xs: 12, md: 6 }}>
+                            <TextField
+                                fullWidth
+                                label={t('facility.addressLine1')}
+                                {...register('addressLine1')}
+                                error={!!errors.addressLine1}
+                                helperText={errors.addressLine1?.message}
+                            />
+                        </Grid>
+
+                        <Grid size={{ xs: 12, md: 6 }}>
+                            <TextField
+                                fullWidth
+                                label={t('facility.addressLine2')}
+                                {...register('addressLine2')}
+                            />
+                        </Grid>
+
+                        <Grid size={{ xs: 12, md: 4 }}>
+                            <TextField
+                                fullWidth
+                                label={t('facility.city')}
+                                {...register('city')}
+                            />
+                        </Grid>
+
+                        <Grid size={{ xs: 12, md: 4 }}>
+                            <TextField
+                                fullWidth
+                                label={t('facility.country')}
+                                {...register('country')}
+                            />
+                        </Grid>
+
+                        <Grid size={{ xs: 12, md: 4 }}>
+                            <TextField
+                                fullWidth
+                                label={t('facility.postalCode')}
+                                {...register('postalCode')}
+                            />
+                        </Grid>
+
+                        <Grid size={12}>
+                            <TextField
+                                fullWidth
+                                multiline
+                                rows={4}
+                                label={t('facility.description')}
+                                {...register('description')}
+                            />
+                        </Grid>
+
+
+
+                        <Grid size={12}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    mt: 2,
+                                }}
+                            >
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    disabled={loading}
+                                    size='large'
+                                >
+                                    {loading
+                                        ? t('common.creating')
+                                        : t('facility.create')}
+                                </Button>
+                            </Box>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Box>
-        </Card>
+                </Box>
+            </Card>
+
+        </DashboardContent>
     );
 }

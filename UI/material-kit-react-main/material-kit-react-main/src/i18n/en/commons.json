@@ -92,7 +92,7 @@
     "reports": "Reports",
     "notifications": "Notifications",
     "members": "Members",
-    "myFacilities" : "My Facilities"
+    "myFacilities": "My Facilities"
   },
   "register": {
     "title": "Create Account",
@@ -175,7 +175,6 @@
       "roleRequired": "Role is required."
     }
   },
-  
 
   "facilityType": {
     "RESIDENTIAL": "Residential",
@@ -186,5 +185,13 @@
     "EDUCATIONAL": "Educational",
     "GOVERNMENT": "Government",
     "OTHER": "Other"
+  },
+
+  "error": {
+    "server": {
+      "title": "Unable to connect to the server",
+      "description": "We're having trouble connecting to the backend server at the moment. Please try again in a few minutes. If the problem persists, contact your system administrator or support team.",
+      "home": "Go to Home"
+    }
   }
 }

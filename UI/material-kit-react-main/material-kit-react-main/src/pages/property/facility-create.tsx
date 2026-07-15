@@ -6,15 +6,11 @@ import { FacilityCreateView } from './facility-create-view';
 // ----------------------------------------------------------------------
 
 export default function Page() {
-      const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <>
-      <title>{`Facility - ${CONFIG.appName}`}</title>
-      <meta
-        name="facility-create"
-        content="Create a new facility here"
-      />
-      <meta name="keywords" content="react,material,kit,application,dashboard,admin,template, facility" />
+      <title>{`${t('facility.create')} - ${CONFIG.appName}`}</title>
+
 
       <FacilityCreateView />
     </>

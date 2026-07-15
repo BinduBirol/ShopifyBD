@@ -78,7 +78,7 @@ export function FacilityTableRow({
 
                 <TableCell>{row.city || '-'}</TableCell>
 
-                <TableCell>{row.country || '-'}</TableCell>
+
 
                 <TableCell>
                     <Label color="info">

@@ -31,6 +31,8 @@ import { useQuery } from '@tanstack/react-query';
 import { applyFilter, emptyRows, getComparator } from './util';
 import { FacilityTableHead } from './facility-table-head';
 import { useTranslation } from 'react-i18next';
+import { ServerErrorView } from '../error/server-error';
+import LoadingData from 'src/components/loading/loading-data';
 
 // ----------------------------------------------------------------------
 
@@ -60,15 +62,7 @@ export function FacilityView() {
     if (isLoading) {
         return (
             <DashboardContent>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        py: 8,
-                    }}
-                >
-                    <CircularProgress />
-                </Box>
+                <LoadingData />
             </DashboardContent>
         );
     }
@@ -76,9 +70,7 @@ export function FacilityView() {
     if (isError) {
         return (
             <DashboardContent>
-                <Typography color="error">
-                    Failed to load facilities.
-                </Typography>
+                <ServerErrorView />
             </DashboardContent>
         );
     }
@@ -97,11 +89,12 @@ export function FacilityView() {
                 </Typography>
 
                 <Button
+                    href='/property/facility/create'
                     variant="contained"
                     color="inherit"
                     startIcon={<Iconify icon="mingcute:add-line" />}
                 >
-                    New Facility
+                    {t('facility.create')}
                 </Button>
             </Box>
 
@@ -136,7 +129,7 @@ export function FacilityView() {
                                     { id: 'name', label: t('facility.name') },
                                     { id: 'type', label: t('facility.type') },
                                     { id: 'city', label: t('facility.city') },
-                                    { id: 'country', label: t('facility.country') },
+                                    //{ id: 'country', label: t('facility.country') },
                                     { id: 'userRole', label: t('facility.role') },
                                     { id: 'actions', label: '' },
                                 ]}
