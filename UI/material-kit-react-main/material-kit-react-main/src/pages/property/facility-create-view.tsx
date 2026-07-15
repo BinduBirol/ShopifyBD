@@ -289,7 +289,7 @@ export function FacilityCreateView() {
                                     size='large'
                                 >
                                     {loading
-                                        ? t('common.creating')
+                                        ? t('common.processing')
                                         : t('facility.create')}
                                 </Button>
                             </Box>

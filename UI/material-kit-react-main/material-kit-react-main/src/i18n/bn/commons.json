@@ -63,6 +63,7 @@
     "cancel": "বাতিল",
     "delete": "মুছুন",
     "loading": "লোড হচ্ছে...",
+    "processing" : "প্রক্রিয়াধীন...",
     "or": "অথবা",
     "serverUnavailable": "সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি।",
     "somethingWentWrong": "কিছু ভুল হয়েছে।",
