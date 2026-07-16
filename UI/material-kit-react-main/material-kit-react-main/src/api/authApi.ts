@@ -1,5 +1,5 @@
 import { LoginResponse } from 'src/auth/auth';
-import api from './axios';
+import api, { publicApi } from './axios';
 
 export interface LoginRequest {
   identifier: string;
@@ -30,13 +30,13 @@ export interface ApiResponse<T> {
 }
 
 export async function login(request: LoginRequest) {
-  const response = await api.post<ApiResponse<LoginResponse>>('/v1/login', request);
+  const response = await publicApi.post<ApiResponse<LoginResponse>>('/v1/login', request);
 
   return response.data;
 }
 
 export async function register(data: any) {
-  const response = await api.post<ApiResponse<any>>('/v1/register', data);
+  const response = await publicApi.post<ApiResponse<any>>('/v1/register', data);
 
   return response.data;
 }

@@ -167,7 +167,6 @@ public class JwtUtil {
                 .signWith(getKey())
                 .compact();
 
-        System.out.println(token);
 
         return token;
     }
