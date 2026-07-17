@@ -1,0 +1,19 @@
+package com.bnroll.property.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestClient;
+
+@Configuration
+public class RestClientConfig {
+
+    @Bean
+    RestClient billingRestClient(
+            @Value("${services.billing.base-url}") String baseUrl) {
+
+        return RestClient.builder()
+                .baseUrl(baseUrl)
+                .build();
+    }
+}

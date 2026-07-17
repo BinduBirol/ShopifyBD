@@ -91,8 +91,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         } catch (Exception ex) {
-
-            ex.printStackTrace();
+            System.err.println(ex.getMessage());
             SecurityContextHolder.clearContext();
         }
 

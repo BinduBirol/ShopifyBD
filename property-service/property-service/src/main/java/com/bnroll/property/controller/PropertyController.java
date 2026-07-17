@@ -1,6 +1,6 @@
 package com.bnroll.property.controller;
 
-import com.bnroll.property.security.UserPrincipal;
+import com.bnroll.common.dto.user.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;

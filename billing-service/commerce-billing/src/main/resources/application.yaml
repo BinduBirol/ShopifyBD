@@ -1,12 +1,12 @@
 debug: false
 server:
-  port: 8082
+  port: 8083
   servlet:
-    context-path: /property
+    context-path: /billing
 
 spring:
   application:
-    name: property-service
+    name: commerce-billing
   messages:
     basename: i18n/messages
     encoding: UTF-8
@@ -21,7 +21,7 @@ spring:
     active: dev
 
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/commerce_property
+    url: jdbc:mysql://127.0.0.1:3306/commerce_billing
     username: commerce_dev
     password: Bnroll@2003
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -62,9 +62,6 @@ jwt:
   refresh-token:
     expiration: 172800000    # 1day
 
-  password-reset-token:
-    expiration: 900000          # 15 minutes
-
 
 springdoc:
   api-docs:
@@ -75,8 +72,4 @@ springdoc:
     operationsSorter: method
     tagsSorter: alpha
     display-request-duration: true
-
-services:
-  billing:
-    base-url: http://localhost:8083/billing
 

@@ -1,4 +1,4 @@
-package com.bnroll.property.security;
+package com.bnroll.common.dto.user;
 
 public record UserPrincipal(
         Long id,

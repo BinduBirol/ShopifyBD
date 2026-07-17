@@ -1,7 +1,6 @@
-package com.bnroll.property.security;
+package com.bnroll.billing.security;
 
 import com.bnroll.commercedomain.enums.ServiceName;
-import com.bnroll.common.dto.user.UserPrincipal;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -132,7 +131,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } catch (Exception e) {
 
-            System.err.println(e.getMessage());
+            e.printStackTrace();
 
             SecurityContextHolder.clearContext();
 

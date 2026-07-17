@@ -1,9 +1,9 @@
 package com.bnroll.property.controller;
 
 import com.bnroll.common.dto.response.ApiResponse;
+import com.bnroll.common.dto.user.UserPrincipal;
 import com.bnroll.dto.property.FacilityDto;
 import com.bnroll.property.entity.Facility;
-import com.bnroll.property.security.UserPrincipal;
 import com.bnroll.property.service.FacilityService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

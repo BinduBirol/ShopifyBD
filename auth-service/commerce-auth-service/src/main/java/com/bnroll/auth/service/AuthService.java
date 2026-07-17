@@ -164,6 +164,8 @@ public class AuthService {
 
         } catch (Exception e) {
 
+            e.printStackTrace();
+
             userRepository.delete(savedUser);
 
             throw new AuthException(
@@ -284,7 +286,7 @@ public class AuthService {
         if (user != null) {
             String token = passwordResetService.createPasswordResetToken(user, locale);
 
-            System.out.println("PASSWORD RESET TOKEN: " + token);
+            System.err.println("PASSWORD RESET TOKEN: " + token);
 
             kafkaProducer.sendPasswordResetRequestedEvent(
                     new PasswordResetRequestedEvent(
