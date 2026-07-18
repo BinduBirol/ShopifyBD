@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Button,
     Card,
@@ -47,6 +48,9 @@ export default function FacilityViewContent({ facility }: Props) {
             const response = await deleteFacility(facility.id);
 
             if (response.success) {
+                enqueueSnackbar(response.data || t('common.success'), {
+                    variant: 'success',
+                });
                 navigate('/property/facility/list');
             } else {
                 enqueueSnackbar(response.error?.message || t('common.somethingWentWrong'), {
@@ -225,22 +229,33 @@ export default function FacilityViewContent({ facility }: Props) {
                 </CardContent>
             </Card>
 
-            {activeWorkspaceId !== facility.id || facility.userRole == "OWNER" || facility.userRole == "PROPERTY_MANAGER" && (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        mb: 3,
-                        mt: 4,
-                    }}
+            {activeWorkspaceId === facility.id && (
+                <Alert
+                    severity="warning"
+                    sx={{ mt: 3 }}
                 >
-                    <DeleteConfirmationButton
-                        title={t('facility.deleteFacility')}
-                        details={t('facility.deleteFacilityConfirm')}
-                        onConfirm={handleDeleteFacility}
-                    />
-                </Box>
+                    {t('facility.activeFacilityDeleteWarning')}
+                </Alert>
             )}
+
+            {activeWorkspaceId !== facility.id &&
+                (facility.userRole === "OWNER" ||
+                    facility.userRole === "PROPERTY_MANAGER") && (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            mb: 3,
+                            mt: 4,
+                        }}
+                    >
+                        <DeleteConfirmationButton
+                            title={t('facility.deleteFacility')}
+                            details={t('facility.deleteFacilityConfirm')}
+                            onConfirm={handleDeleteFacility}
+                        />
+                    </Box>
+                )}
         </DashboardContent>
     );
 }

@@ -15,6 +15,10 @@ import { AnalyticsCurrentSubject } from '../analytics-current-subject';
 import { AnalyticsConversionRates } from '../analytics-conversion-rates';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'src/auth/AuthContext';
+import { Stack } from '@mui/material';
+import { useWorkspace } from 'src/routes/hooks/use-workspace';
+import { useCallback, useEffect } from 'react';
+import { Workspace } from 'src/layouts/components/workspace-context';
 
 // ----------------------------------------------------------------------
 
@@ -23,16 +27,41 @@ export function OverviewAnalyticsView() {
 
   const { user } = useAuth();
 
+  const { workspace } = useWorkspace();
+
+  const activeWorkspaceData = workspace;
+
+
+
   return (
     <DashboardContent maxWidth="xl">
-      <Typography variant="h4" sx={{ mb: { xs: 3, md: 5 } }}>
-        Hi, {user?.firstName} 👋
-
-        
 
 
-      </Typography>
+      {activeWorkspaceData && (
+        <Stack sx={{ mb: 4 }} spacing={1}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 700,
+            }}
+          >
+            {t('dashboard.welcomeMessage', {
+              user: user?.firstName || '',
+              role: t(`userRole.${activeWorkspaceData.plan}`),
+              facility: activeWorkspaceData.name,
+            })}
+          </Typography>
 
+          <Typography
+            variant="body1"
+            color="text.secondary"
+          >
+            {t('dashboard.subWelcomeMessage')}
+          </Typography>
+
+
+        </Stack>
+      )}
 
 
       <Grid container spacing={3}>

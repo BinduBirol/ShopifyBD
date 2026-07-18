@@ -14,6 +14,7 @@ import { Iconify } from 'src/components/iconify';
 
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { useWorkspace } from 'src/routes/hooks/use-workspace';
 
 
 // ----------------------------------------------------------------------
@@ -34,7 +35,8 @@ export function WorkspacesPopover({
   sx,
   ...other
 }: WorkspacesPopoverProps) {
-  const [workspace, setWorkspace] = useState(data[0] ?? null);
+  //const [workspace, setWorkspace] = useState(data[0] ?? null);
+  const { workspace, setWorkspace } = useWorkspace();
 
   const [openPopover, setOpenPopover] =
     useState<HTMLButtonElement | null>(null);
@@ -79,31 +81,11 @@ export function WorkspacesPopover({
 
   const handleChangeWorkspace = useCallback(
     (newValue: (typeof data)[number]) => {
-      console.log('Changing workspace:', newValue);
-
       setWorkspace(newValue);
 
-      localStorage.setItem(
-        'active_workspace_id',
-        newValue.id
-      );
-
-      localStorage.setItem(
-        'active_workspace_data',
-        JSON.stringify(newValue)
-      );
-
-      console.log(
-        'Saved ID:',
-        localStorage.getItem('active_workspace_id')
-      );
-
       handleClosePopover();
-      navigate('/');
     },
-    [handleClosePopover]
-
-
+    [setWorkspace, handleClosePopover]
   );
   const handleAddWorkspace = () => {
     handleClosePopover();

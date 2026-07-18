@@ -199,6 +199,7 @@
     "deleteFacilityConfirm": "Are you sure you want to delete this facility permanently? This action cannot be undone.",
     "delete": "Delete",
     "cancel": "Cancel",
+    "activeFacilityDeleteWarning": "This is your current active workspace, so you cannot delete it right now. Add another facility, switch your workspace, and then you can delete this inactive workspace.",
 
     "validation": {
       "nameRequired": "Facility name is required.",
@@ -230,5 +231,9 @@
     "title": "Sorry, page not found!",
     "description": "Sorry, we couldn't find the page you're looking for. Perhaps you've mistyped the URL? Be sure to check your spelling.",
     "goHome": "Go to home"
+  },
+  "dashboard": {
+    "welcomeMessage": "Hello, {{user}}! 👋 Welcome to {{facility}}. You are signed in as a {{role}}.",
+    "subWelcomeMessage": "Manage properties, monitor activities, and keep your workspace running smoothly."
   }
 }
