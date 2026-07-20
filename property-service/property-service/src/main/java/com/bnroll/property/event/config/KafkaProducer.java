@@ -8,10 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @RequiredArgsConstructor
 public class KafkaProducer {
     private static final String FACILITY_CREATED_TOPIC = "facility-created";
+    private static final String FACILITY_DELETE_TOPIC = "facility-deleted";
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
 
@@ -24,4 +27,11 @@ public class KafkaProducer {
     }
 
 
+    public void facilityDeleteEvent(String name) {
+        kafkaTemplate.send(
+                FACILITY_DELETE_TOPIC,
+                name,
+                LocalDateTime.now()
+        );
+    }
 }

@@ -1,21 +1,24 @@
 debug: false
-
 server:
-  port: 8082
+  port: 8083
   servlet:
-    context-path: /property
+    context-path: /billing
 
 spring:
   application:
-    name: property-service
-
+    name: commerce-billing
   messages:
     basename: i18n/messages
     encoding: UTF-8
     default-locale: en
+  kafka:
+    bootstrap-servers: host.docker.internal:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
   datasource:
-    url: jdbc:mysql://host.docker.internal:3306/commerce_property
+    url: jdbc:mysql://host.docker.internal:3306/commerce_billing
     username: commerce_dev
     password: Bnroll@2003
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -33,13 +36,7 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        format_sql: false
-
-  kafka:
-    bootstrap-servers: host.docker.internal:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+        format_sql: true
 
 management:
   endpoints:
@@ -56,15 +53,12 @@ logging:
 
 jwt:
   secret: 6d8b4d5f1c8a9e73b2f4d1a7c9e8f6b5a1d3e7f9c2b4a6d8e1f3c5b7a9d2e4f6
-
   access-token:
     expiration: 300000
 
   refresh-token:
-    expiration: 172800000
+    expiration: 172800000    # 1day
 
-  password-reset-token:
-    expiration: 900000
 
 springdoc:
   api-docs:
@@ -75,22 +69,4 @@ springdoc:
     operationsSorter: method
     tagsSorter: alpha
     display-request-duration: true
-
-services:
-  auth:
-    base-url: http://host.docker.internal:8081
-  billing:
-    base-url: http://host.docker.internal:8083/billing
-
-
-resilience4j:
-  circuitbreaker:
-    instances:
-      billing-service:
-        sliding-window-size: 10
-        minimum-number-of-calls: 5
-        failure-rate-threshold: 50
-        wait-duration-in-open-state: 30s
-        permitted-number-of-calls-in-half-open-state: 3
-
 

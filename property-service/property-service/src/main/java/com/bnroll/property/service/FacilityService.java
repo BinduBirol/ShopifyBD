@@ -202,6 +202,7 @@ public class FacilityService {
                 ));
 
         RoleName role = facilityMember.getRole();
+        Facility facility = facilityMember.getFacility();
 
         if (role != RoleName.OWNER && role != RoleName.PROPERTY_MANAGER) {
             throw new PropertyException(
@@ -213,6 +214,9 @@ public class FacilityService {
         try {
             facilityMemberRepository.deleteByUserIdAndFacility_Id(user.id(), facilityId);
             facilityRepository.deleteById(facilityId);
+
+            kafkaProducer.facilityDeleteEvent(facility.getName());
+
         } catch (DataIntegrityViolationException ex) {
             throw new PropertyException(
                     "error.facility.delete.failed.in_use",
