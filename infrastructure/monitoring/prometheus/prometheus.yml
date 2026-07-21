@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: auth-service
+    metrics_path: /auth/actuator/prometheus
+    static_configs:
+      - targets:
+          - auth-service:8081
+
+  - job_name: billing-service
+    metrics_path: /billing/actuator/prometheus
+    static_configs:
+      - targets:
+          - billing-service:8083
+
+  - job_name: property-service
+    metrics_path: /property/actuator/prometheus
+    static_configs:
+      - targets:
+          - property-service:8082

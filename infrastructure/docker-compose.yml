@@ -1,0 +1,55 @@
+name: property-os
+
+services:
+
+  auth-service:
+    build:
+      context: ../auth-service/commerce-auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    networks:
+      - property-network
+
+  billing-service:
+    build:
+      context: ../billing-service/commerce-billing
+      dockerfile: Dockerfile
+    container_name: billing-service
+    ports:
+      - "8083:8083"
+    restart: unless-stopped
+    networks:
+      - property-network
+
+  property-service:
+    build:
+      context: ../property-service/property-service
+      dockerfile: Dockerfile
+    container_name: property-service
+    ports:
+      - "8082:8082"
+    restart: unless-stopped
+    networks:
+      - property-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    restart: unless-stopped
+    depends_on:
+      - auth-service
+      - billing-service
+      - property-service
+    networks:
+      - property-network
+
+networks:
+  property-network:
+    driver: bridge
