@@ -38,12 +38,6 @@ spring:
       hibernate:
         format_sql: true
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-
 logging:
   level:
     root: INFO
@@ -79,3 +73,16 @@ password:
 services:
   property:
     base-url: http://host.docker.internal:8082/property
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+  metrics:
+    tags:
+      application: billing-service

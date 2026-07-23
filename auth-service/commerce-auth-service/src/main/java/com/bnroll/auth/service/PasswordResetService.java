@@ -8,6 +8,7 @@ import com.bnroll.auth.util.OtpGenerator;
 
 import com.bnroll.commercedomain.exception.AuthException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -20,6 +21,7 @@ import java.time.Instant;
 import java.util.Locale;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PasswordResetService {
@@ -35,11 +37,19 @@ public class PasswordResetService {
     @Transactional
     public String createPasswordResetToken(User user, Locale locale) throws AuthException {
 
-
+        log.info(
+                "Creating password reset token. userId={}",
+                user.getId()
+        );
         Optional<PasswordResetToken> existingToken =
                 passwordResetTokenRepository.findByUserAndUsedFalse(user);
 
         if (existingToken.isPresent()) {
+
+            log.warn(
+                    "Password reset already requested. userId={}",
+                    user.getId()
+            );
 
             PasswordResetToken token = existingToken.get();
 
@@ -72,24 +82,31 @@ public class PasswordResetService {
 
         passwordResetTokenRepository.save(entity);
 
+        log.info(
+                "Password reset token created successfully. userId={}",
+                user.getId()
+        );
 
         return token;
     }
 
     @Transactional(readOnly = true)
     public PasswordResetToken validateToken(String token) {
-
+        log.info("Validating password reset token.");
         PasswordResetToken storedToken = passwordResetTokenRepository.findByTokenHash(DigestUtils.sha256Hex(token)).orElseThrow(() -> new AuthException("password.reset.token.invalid", HttpStatus.BAD_REQUEST));
 
         if (storedToken.isUsed()) {
+            log.warn("Password reset token already used.");
             throw new AuthException("password.reset.token.used", HttpStatus.BAD_REQUEST);
         }
 
         if (storedToken.getExpiresAt().isBefore(Instant.now())) {
+            log.warn("Password reset token expired.");
             throw new AuthException("password.reset.token.expired", HttpStatus.BAD_REQUEST);
         }
 
         if (!jwtUtil.isTokenValid(token, storedToken.getUser().getId())) {
+            log.warn("Invalid password reset token.");
             throw new AuthException("password.reset.token.invalid", HttpStatus.BAD_REQUEST);
         }
 
@@ -98,6 +115,11 @@ public class PasswordResetService {
 
     @Transactional
     public void markAsUsed(PasswordResetToken token) {
+
+        log.info(
+                "Password reset token marked as used. userId={}",
+                token.getUser().getId()
+        );
 
         token.setUsed(true);
         token.setUsedAt(Instant.now());
@@ -115,6 +137,7 @@ public class PasswordResetService {
 
             return messageSource.getMessage("time.remaining.seconds", new Object[]{seconds}, locale);
         } catch (Exception ex) {
+            log.error("Failed to format remaining time.", ex);
             ex.printStackTrace();
             throw new AuthException("internal.server.error", HttpStatus.INTERNAL_SERVER_ERROR);
         }

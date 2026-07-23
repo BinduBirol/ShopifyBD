@@ -7,6 +7,7 @@ import com.bnroll.auth.security.JwtUtil;
 import com.bnroll.commercedomain.enums.user.RoleName;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JwtService {
@@ -85,10 +87,14 @@ public class JwtService {
     @Transactional
     public void revokeAllSessions(User user) {
 
+        log.info("Revoking all sessions. userId={}", user.getId());
+
         refreshTokenRepository.revokeAllByUserId(
                 user.getId(),
                 Instant.now()
         );
+
+        log.info("All sessions revoked. userId={}", user.getId());
     }
 
     public String generateServiceToken(String serviceName) {

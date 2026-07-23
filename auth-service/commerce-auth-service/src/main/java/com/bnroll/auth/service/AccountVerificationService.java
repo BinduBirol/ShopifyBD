@@ -12,6 +12,7 @@ import com.bnroll.commercedomain.enums.VerificationPurpose;
 import com.bnroll.commercedomain.exception.AuthException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountVerificationService {
@@ -35,7 +37,16 @@ public class AccountVerificationService {
             User user,
             VerificationPurpose purpose
     ) {
+        log.info(
+                "Generating verification OTP. userId={}, purpose={}",
+                user.getId(),
+                purpose
+        );
         if (user.isVerified()) {
+            log.warn(
+                    "OTP generation rejected. User already verified. userId={}",
+                    user.getId()
+            );
             throw new AuthException(
                     "user.already.verified",
                     HttpStatus.BAD_REQUEST
@@ -49,6 +60,12 @@ public class AccountVerificationService {
                 );
 
         if (existingOtp.isPresent()) {
+
+            log.warn(
+                    "OTP already active. userId={}, purpose={}",
+                    user.getId(),
+                    purpose
+            );
 
             VerificationOtp otp = existingOtp.get();
 
@@ -97,12 +114,23 @@ public class AccountVerificationService {
                 otp,
                 purpose
         );
+
+        log.info(
+                "Verification OTP event published. userId={}, purpose={}",
+                user.getId(),
+                purpose
+        );
     }
 
     @Transactional
     public void verifyAccount(
             @Valid VerifyAccountRequest request
     ) {
+
+        log.info(
+                "Account verification started. userId={}",
+                request.getUserId()
+        );
 
 
         User user = userRepository.findById(request.getUserId())
@@ -114,6 +142,10 @@ public class AccountVerificationService {
 
 
         if (user.isVerified()) {
+            log.warn(
+                    "Account verification skipped. User already verified. userId={}",
+                    user.getId()
+            );
             throw new AuthException(
                     "user.already.verified",
                     HttpStatus.BAD_REQUEST
@@ -135,7 +167,10 @@ public class AccountVerificationService {
 
 
         if (verificationOtp.getExpiresAt().isBefore(LocalDateTime.now())) {
-
+            log.warn(
+                    "Account verification failed. OTP expired. userId={}",
+                    user.getId()
+            );
             throw new AuthException(
                     "otp.expired",
                     HttpStatus.BAD_REQUEST
@@ -147,6 +182,11 @@ public class AccountVerificationService {
                 request.getOtp(),
                 verificationOtp.getOtpHash()
         )) {
+
+            log.warn(
+                    "Account verification failed. Invalid OTP. userId={}",
+                    user.getId()
+            );
 
             throw new AuthException(
                     "otp.mismatch",
@@ -165,6 +205,11 @@ public class AccountVerificationService {
         user.setActive(true);
 
         userRepository.save(user);
+
+        log.info(
+                "Account verified successfully. userId={}",
+                user.getId()
+        );
 
         // kafkaProducer.publishAccountVerifiedEvent(user);
     }

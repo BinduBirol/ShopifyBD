@@ -41,6 +41,7 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/api-docs/**",
+                                "/actuator/**",
                                 "/v1/user/verify/resend-otp",
                                 "/v1/user/verify/account/otp"
                         ).permitAll()
